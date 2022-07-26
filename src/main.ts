@@ -9,10 +9,9 @@ async function bootstrap() {
     .setTitle('Doleo2 API')
     .setDescription('JSON:API-compliant API for the Doleo2 web app.')
     .setVersion('1.0')
-    .addTag('doleo')
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('swagger', app, document);
 
   await app.listen(3000);
 }
