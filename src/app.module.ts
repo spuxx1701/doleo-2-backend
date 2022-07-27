@@ -1,9 +1,9 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UsersModule } from './modules/users.module';
-
-import { User } from './entities/user.entity';
+import UsersModule from './modules/users.module';
+import ListsModule from './modules/lists.module';
+import ListEntriesModule from './modules/list-entries.module';
 
 @Module({
   imports: [
@@ -15,11 +15,12 @@ import { User } from './entities/user.entity';
       username: process.env.DATABASE_USER,
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_DB,
-      entities: [User],
-      // autoLoadEntities: true,
+      autoLoadEntities: true,
       synchronize: process.env.DATABASE_SYNCHRONIZE.toLowerCase() === 'true',
     }),
     UsersModule,
+    ListsModule,
+    ListEntriesModule,
   ],
 })
 export class AppModule {}

@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import {
   Entity,
   Column,
@@ -6,12 +7,12 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { List } from './list.entity';
+import List from './list.entity';
 
 @Entity()
-export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
+export default class User {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ type: 'varchar', length: 50, unique: true })
   email: string;
@@ -20,20 +21,24 @@ export class User {
   displayName: string;
 
   @Column()
+  @Exclude()
   password: string;
 
-  @Column()
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @Exclude()
   lastLogin: Date;
 
-  @Column()
-  selectedDesign: string;
+  @Column({ default: 0 })
+  selectedDesign: number;
 
-  // @OneToMany(() => List, (list) => list.owner)
-  // ownedLists: List[];
+  @OneToMany(() => List, (list) => list.owner)
+  ownedLists: List[];
 
   @CreateDateColumn()
+  @Exclude()
   createdAt: Date;
 
   @UpdateDateColumn()
+  @Exclude()
   updatedAt: Date;
 }

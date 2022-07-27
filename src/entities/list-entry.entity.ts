@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import {
   Entity,
   Column,
@@ -6,28 +7,30 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { List } from './list.entity';
+import List from './list.entity';
 
 @Entity()
-export class ListEntry {
+export default class ListEntry {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'varchar', length: '30' })
+  @Column({ type: 'varchar', length: '255' })
   text: string;
 
-  @Column()
+  @Column({ default: 1 })
   amount: number;
 
-  @Column()
+  @Column({ default: false })
   isChecked: true;
 
-  // @ManyToOne(() => List, (list) => list.entries)
-  // list: List;
+  @ManyToOne(() => List, (list) => list.entries)
+  list: List;
 
   @CreateDateColumn()
+  @Exclude()
   createdAt: Date;
 
   @UpdateDateColumn()
+  @Exclude()
   updatedAt: Date;
 }

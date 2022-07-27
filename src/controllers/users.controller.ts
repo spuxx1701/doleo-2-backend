@@ -1,13 +1,27 @@
-import { Controller, Get } from '@nestjs/common';
-import { User } from 'src/entities/user.entity';
-import { UsersService } from 'src/services/users.service';
+import {
+  ClassSerializerInterceptor,
+  Controller,
+  Get,
+  Param,
+  UseInterceptors,
+} from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
+import User from 'src/entities/user.entity';
+import UsersService from 'src/services/users.service';
 
+@UseInterceptors(ClassSerializerInterceptor)
+@ApiTags('Users')
 @Controller('users')
 export default class UsersController {
-  constructor(private usersService: UsersService) {}
+  constructor(private service: UsersService) {}
 
   @Get()
-  async findAll(): Promise<User[]> {
-    return this.usersService.findAll();
+  async findMany(): Promise<User[]> {
+    return await this.service.findMany();
+  }
+
+  @Get(':id')
+  async findOne(@Param('id') id: string): Promise<User> {
+    return await this.service.findOne(id);
   }
 }
