@@ -6,6 +6,8 @@ import {
   OneToMany,
   ManyToMany,
   JoinTable,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { ListEntry } from './list-entry.entity';
 import { User } from './user.entity';
@@ -21,13 +23,19 @@ export class List {
   @Column()
   hasAmounts: boolean;
 
-  @OneToMany(() => ListEntry, (listEntry) => listEntry.list)
-  entries: ListEntry;
+  // @OneToMany(() => ListEntry, (listEntry) => listEntry.list)
+  // entries: ListEntry;
 
-  @ManyToOne(() => User, (user) => user.ownedLists)
-  owner: User;
+  // @ManyToOne(() => User, (user) => user.ownedLists)
+  // owner: User;
 
-  @ManyToMany(() => User)
-  @JoinTable()
-  members: User[];
+  // @ManyToMany(() => User)
+  // @JoinTable()
+  // members: User[];
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

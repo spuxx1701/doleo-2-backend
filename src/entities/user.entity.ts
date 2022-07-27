@@ -1,4 +1,11 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { List } from './list.entity';
 
 @Entity()
@@ -6,10 +13,10 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar', length: 100, unique: true })
+  @Column({ type: 'varchar', length: 50, unique: true })
   email: string;
 
-  @Column({ type: 'varchar', length: 100 })
+  @Column({ type: 'varchar', length: 30 })
   displayName: string;
 
   @Column()
@@ -18,12 +25,15 @@ export class User {
   @Column()
   lastLogin: Date;
 
-  @Column('simple-json')
-  settings: {
-    selectedDesign: string;
-    listAutoRefresh: boolean;
-  };
+  @Column()
+  selectedDesign: string;
 
-  @OneToMany(() => List, (list) => list.owner)
-  ownedLists: List[];
+  // @OneToMany(() => List, (list) => list.owner)
+  // ownedLists: List[];
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }
