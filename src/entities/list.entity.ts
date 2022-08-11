@@ -1,4 +1,3 @@
-import { Exclude } from 'class-transformer';
 import {
   IsArray,
   IsBoolean,
@@ -17,47 +16,53 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { AutoMap } from '@automapper/classes';
 import ListEntry from './list-entry.entity';
 import User from './user.entity';
 
 @Entity()
 export default class List {
   @PrimaryGeneratedColumn('uuid')
+  @AutoMap()
   id: string;
 
   @Column({ type: 'varchar', length: '30' })
   @IsString()
   @IsNotEmpty()
+  @AutoMap()
   displayName: string;
 
   @Column({ type: 'varchar', length: '30' })
   @IsString()
   @IsNotEmpty()
+  @AutoMap()
   iconName: string;
 
   @Column({ default: false })
   @IsBoolean()
+  @AutoMap()
   hasAmounts: boolean;
 
   @OneToMany(() => ListEntry, (listEntry) => listEntry.list)
   @IsOptional()
   @IsArray()
+  @AutoMap(() => [ListEntry])
   entries: ListEntry;
 
-  // @ManyToOne(() => User, (user) => user.ownedLists)
-  // @IsNotEmpty()
-  // owner: User;
+  @ManyToOne(() => User, (user) => user.ownedLists)
+  @IsNotEmpty()
+  @AutoMap(() => User)
+  owner: User;
 
-  // @ManyToMany(() => User)
-  // @JoinTable()
-  // @IsArray()
-  // members: User[];
+  @ManyToMany(() => User)
+  @JoinTable()
+  @IsArray()
+  @AutoMap(() => [User])
+  members: User[];
 
   @CreateDateColumn()
-  @Exclude()
   createdAt: Date;
 
   @UpdateDateColumn()
-  @Exclude()
   updatedAt: Date;
 }

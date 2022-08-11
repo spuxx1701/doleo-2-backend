@@ -13,10 +13,12 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import ListsService from 'src/services/lists.service';
 import List from 'src/entities/list.entity';
-import ListDto from 'src/dtos/list/list.dto';
+import ListReadDto from 'src/dtos/list/list.read.dto';
+import { mapper } from 'src/mappings/mapper';
+import ListCreateOrUpdateDto from 'src/dtos/list/list.create-or-update.dto';
 
 @Controller('lists')
 @ApiTags('Lists')
@@ -26,22 +28,47 @@ export default class ListsController {
   constructor(private service: ListsService) {}
 
   @Get()
-  async findAll(): Promise<List[]> {
-    return this.service.findAll();
+  @ApiOperation({
+    description: 'Retrieves all the lists the signed in user has access to.',
+  })
+  async findAll(): Promise<ListReadDto[]> {
+    const lists = await this.service.findAll({
+      relations: {
+        owner: true,
+        members: true,
+        entries: true,
+      },
+    });
+    return mapper.mapArray(lists, List, ListReadDto);
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<List> {
-    return this.service.findOne(id);
+  @ApiOperation({
+    description:
+      'Retrieves a list by id if the signed in user has access to it.',
+  })
+  async findOne(@Param('id') id: string): Promise<ListReadDto> {
+    const list = await this.service.findOne({
+      where: { id },
+      relations: {
+        owner: true,
+        members: true,
+        entries: true,
+      },
+    });
+    return mapper.map(list, List, ListReadDto);
   }
 
   @Post()
-  async create(@Body() listDto: ListDto) {
+  async create(@Body() listDto: ListCreateOrUpdateDto) {
     return await this.service.create(listDto);
   }
 
   @Put(':id')
-  async update(@Param('id') id: string, @Body() listDto: ListDto) {
+  async update(
+    @Param('id') id: string,
+    @Body() listDto: ListCreateOrUpdateDto,
+  ) {
     return 'Updated!';
   }
 

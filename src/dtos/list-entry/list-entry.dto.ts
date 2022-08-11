@@ -1,3 +1,4 @@
+import { AutoMap } from '@automapper/classes';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export default class ListEntryDto {
@@ -7,6 +8,7 @@ export default class ListEntryDto {
     minLength: 1,
     maxLength: 255,
   })
+  @AutoMap()
   text: string;
 
   @ApiProperty({
@@ -14,6 +16,7 @@ export default class ListEntryDto {
     default: 1,
   })
   @ApiPropertyOptional()
+  @AutoMap()
   amount: number;
 
   @ApiProperty({
@@ -21,13 +24,6 @@ export default class ListEntryDto {
     default: false,
   })
   @ApiPropertyOptional()
+  @AutoMap()
   isChecked: boolean;
-
-  @ApiProperty({
-    description: 'The list this list entry belongs to.',
-    example: 'some-list-uuid',
-    minLength: 36,
-    maxLength: 36,
-  })
-  listId: string;
 }

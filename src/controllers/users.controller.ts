@@ -19,19 +19,22 @@ export default class UsersController {
 
   @Get()
   @ApiOperation({
-    summary: 'Retrieves all users. Does not include sensible information.',
+    summary: 'Retrieves all users. Only includes public information.',
   })
   async findMany(): Promise<UserDto[]> {
-    const users = await this.service.findMany();
+    const users = await this.service.findMany({ relations: { family: true } });
     return mapper.mapArray(users, User, UserDto);
   }
 
   @Get(':id')
   @ApiOperation({
-    summary: 'Retrieves a user by id. Does not include sensible information.',
+    summary: 'Retrieves a user by id. Only includes public information.',
   })
   async findOne(@Param('id') id: string): Promise<UserDto> {
-    const user = await this.service.findOne(id);
+    const user = await this.service.findOne({
+      where: { id },
+      relations: { family: true },
+    });
     return mapper.map(user, User, UserDto);
   }
 }

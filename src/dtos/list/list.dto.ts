@@ -1,4 +1,5 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
+import { AutoMap } from '@automapper/classes';
 
 export default class ListDto {
   @ApiProperty({
@@ -7,6 +8,7 @@ export default class ListDto {
     minLength: 1,
     maxLength: 30,
   })
+  @AutoMap()
   displayName: string;
 
   @ApiProperty({
@@ -16,27 +18,10 @@ export default class ListDto {
     minLength: 1,
     maxLength: 30,
   })
+  @AutoMap()
   iconName: string;
 
   @ApiProperty({ description: 'Whether the list has amounts.', default: false })
+  @AutoMap()
   hasAmounts: boolean;
-
-  @ApiProperty({
-    description: 'Who owns the list.',
-    example: 'some-user-uuid',
-    minLength: 36,
-    maxLength: 36,
-  })
-  ownerId: string;
-
-  @ApiProperty({
-    description:
-      'Who has access to the list. Does not need to include the owner id.',
-    example: ['some-user-uuid', 'some-other-user-id'],
-    type: [String],
-    minLength: 36,
-    maxLength: 36,
-  })
-  @ApiPropertyOptional()
-  memberIds?: string[];
 }

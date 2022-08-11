@@ -10,7 +10,7 @@ export default class FamiliesService {
     private familiesRepository: Repository<Family>,
   ) {}
 
-  async findMany(options: FindManyOptions<Family>): Promise<Family[]> {
+  async findMany(options?: FindManyOptions<Family>): Promise<Family[]> {
     return this.familiesRepository.find(options);
   }
 

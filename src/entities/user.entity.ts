@@ -37,8 +37,9 @@ export default class User {
   @AutoMap(() => Family)
   family: Family;
 
-  // @OneToMany(() => List, (list) => list.owner)
-  // ownedLists: List[];
+  @OneToMany(() => List, (list) => list.owner)
+  @AutoMap(() => [List])
+  ownedLists: List[];
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   lastLogin: Date;

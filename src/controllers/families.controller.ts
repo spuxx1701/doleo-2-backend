@@ -13,7 +13,7 @@ import FamiliesService from 'src/services/families.service';
 
 @UseInterceptors(ClassSerializerInterceptor)
 @ApiTags('Families')
-@Controller('Families')
+@Controller('families')
 export default class FamiliesController {
   constructor(private service: FamiliesService) {}
 
