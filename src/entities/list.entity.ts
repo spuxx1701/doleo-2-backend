@@ -44,14 +44,14 @@ export default class List {
   @IsArray()
   entries: ListEntry;
 
-  @ManyToOne(() => User, (user) => user.ownedLists)
-  @IsNotEmpty()
-  owner: User;
+  // @ManyToOne(() => User, (user) => user.ownedLists)
+  // @IsNotEmpty()
+  // owner: User;
 
-  @ManyToMany(() => User)
-  @JoinTable()
-  @IsArray()
-  members: User[];
+  // @ManyToMany(() => User)
+  // @JoinTable()
+  // @IsArray()
+  // members: User[];
 
   @CreateDateColumn()
   @Exclude()

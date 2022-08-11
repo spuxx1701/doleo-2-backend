@@ -16,7 +16,7 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import ListsService from 'src/services/lists.service';
 import List from 'src/entities/list.entity';
-import ListDto from 'src/dtos/list.dto';
+import ListDto from 'src/dtos/list/list.dto';
 
 @Controller('lists')
 @ApiTags('Lists')

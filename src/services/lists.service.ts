@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindManyOptions, In, Repository } from 'typeorm';
 import List from 'src/entities/list.entity';
-import ListDto from 'src/dtos/list.dto';
+import ListDto from 'src/dtos/list/list.dto';
 import UsersService from './users.service';
 import { validateOrThrow } from 'src/utils/service-helper';
 
@@ -25,24 +25,24 @@ export default class ListsService {
   async create(listDto: ListDto): Promise<List> {
     const list = new List();
     Object.assign(list, listDto);
-    // Find the owner
-    list.owner = await this.usersService.findOne(listDto.ownerId);
-    if (!list.owner) {
-      throw new BadRequestException('Owner does not exist.');
-    }
-    // Push ownerId to memberIds if needed
-    const ownerIdInMemberIds = await listDto.memberIds.find(
-      (element) => element === listDto.ownerId,
-    );
-    if (!ownerIdInMemberIds) {
-      listDto.memberIds.push(listDto.ownerId);
-    }
-    // Find members
-    list.members = await this.usersService.findMany({
-      where: {
-        id: In(listDto.memberIds),
-      },
-    } as FindManyOptions);
+    // // Find the owner
+    // list.owner = await this.usersService.findOne(listDto.ownerId);
+    // if (!list.owner) {
+    //   throw new BadRequestException('Owner does not exist.');
+    // }
+    // // Push ownerId to memberIds if needed
+    // const ownerIdInMemberIds = await listDto.memberIds.find(
+    //   (element) => element === listDto.ownerId,
+    // );
+    // if (!ownerIdInMemberIds) {
+    //   listDto.memberIds.push(listDto.ownerId);
+    // }
+    // // Find members
+    // list.members = await this.usersService.findMany({
+    //   where: {
+    //     id: In(listDto.memberIds),
+    //   },
+    // } as FindManyOptions);
     await validateOrThrow(list);
     this.listsRepository.insert(list);
     return list;
