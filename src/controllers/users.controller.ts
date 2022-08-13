@@ -8,10 +8,11 @@ import {
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import UserDto from 'src/dtos/user/user.dto';
 import User from 'src/entities/user.entity';
+import { LoggingInterceptor } from 'src/interceptors/logging';
 import { mapper } from 'src/mappings/mapper';
 import UsersService from 'src/services/users.service';
 
-@UseInterceptors(ClassSerializerInterceptor)
+@UseInterceptors(ClassSerializerInterceptor, LoggingInterceptor)
 @ApiTags('Users')
 @Controller('users')
 export default class UsersController {

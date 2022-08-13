@@ -19,10 +19,11 @@ import List from 'src/entities/list.entity';
 import ListReadDto from 'src/dtos/list/list.read.dto';
 import { mapper } from 'src/mappings/mapper';
 import ListCreateOrUpdateDto from 'src/dtos/list/list.create-or-update.dto';
+import { LoggingInterceptor } from 'src/interceptors/logging';
 
 @Controller('lists')
 @ApiTags('Lists')
-@UseInterceptors(ClassSerializerInterceptor)
+@UseInterceptors(ClassSerializerInterceptor, LoggingInterceptor)
 @UsePipes(new ValidationPipe({ transform: true }))
 export default class ListsController {
   constructor(private service: ListsService) {}

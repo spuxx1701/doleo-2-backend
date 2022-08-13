@@ -8,10 +8,11 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import ListEntryReadDto from 'src/dtos/list-entry/list-entry.read.dto';
 import ListEntry from 'src/entities/list-entry.entity';
+import { LoggingInterceptor } from 'src/interceptors/logging';
 import { mapper } from 'src/mappings/mapper';
 import ListEntriesService from 'src/services/list-entries.service';
 
-@UseInterceptors(ClassSerializerInterceptor)
+@UseInterceptors(ClassSerializerInterceptor, LoggingInterceptor)
 @ApiTags('List entries')
 @Controller('list-entries')
 export default class ListEntriesController {
