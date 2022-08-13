@@ -45,7 +45,7 @@ export default class List {
   hasAmounts: boolean;
 
   @OneToMany(() => ListEntry, (listEntry) => listEntry.list, {
-    cascade: true,
+    cascade: ['insert', 'remove'],
     orphanedRowAction: 'delete',
   })
   @IsOptional()
@@ -53,12 +53,18 @@ export default class List {
   @AutoMap(() => [ListEntry])
   entries: ListEntry;
 
-  @ManyToOne(() => User, (user) => user.ownedLists)
+  @ManyToOne(() => User, (user) => user.ownedLists, {
+    eager: true,
+  })
   @IsNotEmpty()
   @AutoMap(() => User)
   owner: User;
 
-  @ManyToMany(() => User, { cascade: true, orphanedRowAction: 'delete' })
+  @ManyToMany(() => User, {
+    eager: true,
+    cascade: ['insert', 'remove'],
+    orphanedRowAction: 'delete',
+  })
   @JoinTable()
   @IsNotEmpty()
   @IsArray()
