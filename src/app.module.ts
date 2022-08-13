@@ -5,6 +5,7 @@ import UsersModule from './modules/users.module';
 import ListsModule from './modules/lists.module';
 import ListEntriesModule from './modules/list-entries.module';
 import FamiliesModule from './modules/family.module';
+import CoreModule from './modules/core.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import FamiliesModule from './modules/family.module';
       autoLoadEntities: true,
       synchronize: process.env.DATABASE_SYNCHRONIZE.toLowerCase() === 'true',
     }),
+    CoreModule,
     UsersModule,
     ListsModule,
     ListEntriesModule,

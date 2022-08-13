@@ -1,11 +1,9 @@
 import {
-  BadRequestException,
   Body,
   ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
-  HttpException,
   Param,
   Post,
   Put,
@@ -18,8 +16,9 @@ import ListsService from 'src/services/lists.service';
 import List from 'src/entities/list.entity';
 import ListReadDto from 'src/dtos/list/list.read.dto';
 import { mapper } from 'src/mappings/mapper';
-import ListCreateOrUpdateDto from 'src/dtos/list/list.create-or-update.dto';
+import ListUpdateDto from 'src/dtos/list/list.update.dto';
 import { LoggingInterceptor } from 'src/interceptors/logging';
+import ListCreateDto from 'src/dtos/list/list.create.dto';
 
 @Controller('lists')
 @ApiTags('Lists')
@@ -63,18 +62,16 @@ export default class ListsController {
   @ApiOperation({
     summary: 'Creates a new list with the signed-in user as owner.',
   })
-  async create(@Body() listDto: ListCreateOrUpdateDto) {
-    return await this.service.create(listDto);
+  async create(@Body() listCreateDto: ListCreateDto) {
+    const createdList = await this.service.create(listCreateDto);
+    return mapper.map(createdList, List, ListReadDto);
   }
 
   @Put(':id')
   @ApiOperation({
     summary: 'Updates a list.',
   })
-  async update(
-    @Param('id') id: string,
-    @Body() listDto: ListCreateOrUpdateDto,
-  ) {
+  async update(@Param('id') id: string, @Body() listUpdateDto: ListUpdateDto) {
     return 'Updated!';
   }
 
@@ -83,6 +80,6 @@ export default class ListsController {
     summary: "Deletes a list if the requesting user is the list's owner.",
   })
   async remove(@Param('id') id: string) {
-    return 'Deleted!';
+    return await this.service.delete(id);
   }
 }

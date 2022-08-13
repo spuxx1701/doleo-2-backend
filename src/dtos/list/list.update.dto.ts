@@ -1,7 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import ListDto from './list.dto';
 
-export default class ListCreateOrUpdateDto extends ListDto {
+export default class ListUpdateDto extends ListDto {
   @ApiProperty({
     description: 'Who owns the list.',
     example: 'some-user-uuid',

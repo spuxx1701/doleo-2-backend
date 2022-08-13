@@ -23,5 +23,5 @@ export default class ListDto {
 
   @ApiProperty({ description: 'Whether the list has amounts.', default: false })
   @AutoMap()
-  hasAmounts: boolean;
+  hasAmounts = false;
 }

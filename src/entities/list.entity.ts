@@ -39,11 +39,15 @@ export default class List {
   iconName: string;
 
   @Column({ default: false })
+  @IsOptional()
   @IsBoolean()
   @AutoMap()
   hasAmounts: boolean;
 
-  @OneToMany(() => ListEntry, (listEntry) => listEntry.list)
+  @OneToMany(() => ListEntry, (listEntry) => listEntry.list, {
+    cascade: true,
+    orphanedRowAction: 'delete',
+  })
   @IsOptional()
   @IsArray()
   @AutoMap(() => [ListEntry])
@@ -54,8 +58,9 @@ export default class List {
   @AutoMap(() => User)
   owner: User;
 
-  @ManyToMany(() => User)
+  @ManyToMany(() => User, { cascade: true, orphanedRowAction: 'delete' })
   @JoinTable()
+  @IsNotEmpty()
   @IsArray()
   @AutoMap(() => [User])
   members: User[];
