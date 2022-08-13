@@ -22,7 +22,7 @@ export class LoggingInterceptor implements NestInterceptor {
       tap(() => {
         const dateOut = new Date();
         Logger.log(
-          `Request served after ${dateOut.getTime() - dateIn.getTime()}ms.`,
+          `Request fulfilled after ${dateOut.getTime() - dateIn.getTime()}ms.`,
         );
       }),
     );
