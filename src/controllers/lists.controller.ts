@@ -30,7 +30,7 @@ export default class ListsController {
 
   @Get()
   @ApiOperation({
-    description: 'Retrieves all the lists the signed in user has access to.',
+    summary: 'Retrieves all the lists the signed in user has access to.',
   })
   async findAll(): Promise<ListReadDto[]> {
     const lists = await this.service.findAll({
@@ -45,8 +45,7 @@ export default class ListsController {
 
   @Get(':id')
   @ApiOperation({
-    description:
-      'Retrieves a list by id if the signed in user has access to it.',
+    summary: 'Retrieves a list by id if the signed in user has access to it.',
   })
   async findOne(@Param('id') id: string): Promise<ListReadDto> {
     const list = await this.service.findOne({
@@ -61,11 +60,17 @@ export default class ListsController {
   }
 
   @Post()
+  @ApiOperation({
+    summary: 'Creates a new list with the signed-in user as owner.',
+  })
   async create(@Body() listDto: ListCreateOrUpdateDto) {
     return await this.service.create(listDto);
   }
 
   @Put(':id')
+  @ApiOperation({
+    summary: 'Updates a list.',
+  })
   async update(
     @Param('id') id: string,
     @Body() listDto: ListCreateOrUpdateDto,
@@ -74,6 +79,9 @@ export default class ListsController {
   }
 
   @Delete(':id')
+  @ApiOperation({
+    summary: "Deletes a list if the requesting user is the list's owner.",
+  })
   async remove(@Param('id') id: string) {
     return 'Deleted!';
   }

@@ -5,7 +5,7 @@ import {
   Param,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import ListEntryReadDto from 'src/dtos/list-entry/list-entry.read.dto';
 import ListEntry from 'src/entities/list-entry.entity';
 import { LoggingInterceptor } from 'src/interceptors/logging';
@@ -18,15 +18,11 @@ import ListEntriesService from 'src/services/list-entries.service';
 export default class ListEntriesController {
   constructor(private service: ListEntriesService) {}
 
-  @Get()
-  async findAll(): Promise<ListEntryReadDto[]> {
-    const listEntries = await this.service.findMany({
-      relations: { list: true },
-    });
-    return mapper.mapArray(listEntries, ListEntry, ListEntryReadDto);
-  }
-
   @Get(':id')
+  @ApiOperation({
+    summary:
+      'Returns a specific list entry if the signed in user has access to the list.',
+  })
   async findOne(@Param('id') id: string): Promise<ListEntryReadDto> {
     const listEntry = await this.service.findOne({
       where: { id },
