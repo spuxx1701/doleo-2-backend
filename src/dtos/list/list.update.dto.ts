@@ -1,23 +1,28 @@
+import { AutoMap } from '@automapper/classes';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import ListDto from './list.dto';
+import { listProperties } from './list.properties';
 
-export default class ListUpdateDto extends ListDto {
-  @ApiProperty({
-    description: 'Who owns the list.',
-    example: 'some-user-uuid',
-    minLength: 36,
-    maxLength: 36,
-  })
+export default class ListUpdateDto {
+  @ApiProperty(listProperties.displayName)
+  @ApiPropertyOptional()
+  @AutoMap()
+  displayName: string;
+
+  @ApiProperty(listProperties.iconName)
+  @ApiPropertyOptional()
+  @AutoMap()
+  iconName: string;
+
+  @ApiProperty(listProperties.hasAmounts)
+  @ApiPropertyOptional()
+  @AutoMap()
+  hasAmounts: boolean;
+
+  @ApiProperty(listProperties.ownerId)
+  @ApiPropertyOptional()
   ownerId: string;
 
-  @ApiProperty({
-    description:
-      'Who has access to the list. Does not need to include the owner id.',
-    example: ['some-user-uuid', 'some-other-user-id'],
-    type: [String],
-    minLength: 36,
-    maxLength: 36,
-  })
+  @ApiProperty(listProperties.memberIds)
   @ApiPropertyOptional()
   memberIds?: string[];
 }

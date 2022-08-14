@@ -44,41 +44,53 @@ export default class ListsService {
     });
     newList.members = [newList.owner];
     await validateOrThrow(newList);
-    const result = await this.listsRepository.insert(newList);
+    const result = await this.listsRepository.save(newList);
+    // ToDo: Log signed in user
     Logger.log(
-      `User '${newList.owner.displayName}' (${newList.owner.id}) created a new list '${newList.displayName}' (${result.identifiers[0].id}).`,
+      `User 'Leo' (........) created a new list '${result.displayName}' (${result.id}).`,
     );
-    return result.raw[0] as List;
+    return result;
   }
 
   async update(id: string, listUpdateDto: ListUpdateDto): Promise<List> {
-    const updatedList = mapper.map(listUpdateDto, ListUpdateDto, List);
-    // Find list
-    const list = await this.listsRepository.findOneBy({ id });
-    if (!list) throw new NotFoundException();
+    const partialList = {
+      id,
+      ...mapper.map(listUpdateDto, ListUpdateDto, List),
+    };
+    // Find and merge list. Includes a workaround because TypeORM's preload does
+    // not load eager relations: https://github.com/typeorm/typeorm/issues/8944
+    const updatedList = await this.listsRepository.preload(partialList);
+    if (!updatedList) throw new NotFoundException();
+    const oldList = await this.listsRepository.findOneBy({ id });
+    if (!updatedList.owner) updatedList.owner = oldList.owner;
+    if (!updatedList.members) updatedList.members = oldList.members;
     // ToDo: Check whether signed in user is listOwner
-    // Find owner
-    const newOwner = await this.usersService.findOne({
-      where: { id: listUpdateDto.ownerId },
-    });
-    if (!newOwner) {
-      throw new BadRequestException('Owner is invalid.');
+    if (listUpdateDto.ownerId) {
+      // Find owner
+      const newOwner = await this.usersService.findOne({
+        where: { id: listUpdateDto.ownerId },
+      });
+      if (!newOwner) {
+        throw new BadRequestException('Owner is invalid.');
+      }
+      updatedList.owner = newOwner;
     }
-    updatedList.owner = newOwner;
-    // Find members
-    const newMembers = await this.usersService.findMany({
-      where: { id: In(listUpdateDto.memberIds) },
-    });
-    updatedList.members = newMembers;
-    this.addOwnerToMembers(list);
+    if (listUpdateDto.memberIds) {
+      // Find members
+      const newMembers = await this.usersService.findMany({
+        where: { id: In(listUpdateDto.memberIds) },
+      });
+      updatedList.members = newMembers;
+    }
+    this.addOwnerToMembers(updatedList);
     // Validate and submit
     validateOrThrow(updatedList);
-    const result = await this.listsRepository.update({ id }, updatedList);
+    const result = await this.listsRepository.save(updatedList);
     // ToDo: Log signed in user
     Logger.log(
-      `User 'Leo' (............) updated list '${list.displayName}' (${list.id}).`,
+      `User 'Leo' (............) updated list '${result.displayName}' (${result.id}).`,
     );
-    return result.raw[0] as List;
+    return result;
   }
 
   async delete(id: string): Promise<void> {

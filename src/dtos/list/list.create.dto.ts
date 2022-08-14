@@ -1,7 +1,13 @@
-import { Exclude } from 'class-transformer';
-import ListDto from './list.dto';
+import { AutoMap } from '@automapper/classes';
+import { ApiProperty } from '@nestjs/swagger';
+import { listProperties } from './list.properties';
 
-export default class ListCreateDto extends ListDto {
-  @Exclude()
-  hasAmounts: boolean;
+export default class ListCreateDto {
+  @ApiProperty(listProperties.displayName)
+  @AutoMap()
+  displayName: string;
+
+  @ApiProperty(listProperties.iconName)
+  @AutoMap()
+  iconName: string;
 }
