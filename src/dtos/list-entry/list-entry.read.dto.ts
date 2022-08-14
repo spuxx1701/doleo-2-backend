@@ -1,18 +1,26 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { AutoMap } from '@automapper/classes';
-import ListEntryDto from './list-entry.dto';
 import ListReadDto from '../list/list.read.dto';
+import { listEntryProperties } from './list-entry.properties';
 
-export default class ListEntryReadDto extends ListEntryDto {
-  @ApiProperty({
-    description: 'The unique id of the list entry.',
-  })
+export default class ListEntryReadDto {
+  @ApiProperty(listEntryProperties.id)
   @AutoMap()
-  id: string;
+  readonly id: string;
 
-  @ApiProperty({
-    description: 'The list this list entry belongs to.',
-  })
+  @ApiProperty(listEntryProperties.text)
+  @AutoMap()
+  readonly text: string;
+
+  @ApiProperty(listEntryProperties.amount)
+  @AutoMap()
+  readonly amount: number;
+
+  @ApiProperty(listEntryProperties.isChecked)
+  @AutoMap()
+  readonly isChecked: boolean;
+
+  @ApiProperty(listEntryProperties.list)
   @AutoMap(() => ListReadDto)
   list: ListReadDto;
 }

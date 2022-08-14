@@ -27,7 +27,9 @@ export default class ListEntry {
   @AutoMap()
   isChecked: true;
 
-  @ManyToOne(() => List, (list) => list.entries)
+  @ManyToOne(() => List, (list) => list.entries, {
+    eager: true,
+  })
   @AutoMap(() => List)
   list: List;
 

@@ -39,6 +39,7 @@ export default class List {
   iconName: string;
 
   @Column({ default: false })
+  @IsOptional()
   @IsBoolean()
   @AutoMap()
   hasAmounts: boolean;
@@ -47,6 +48,7 @@ export default class List {
     cascade: ['insert', 'remove'],
     orphanedRowAction: 'delete',
   })
+  @IsOptional()
   @IsArray()
   @AutoMap(() => [ListEntry])
   entries: ListEntry;

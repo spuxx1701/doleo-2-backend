@@ -5,13 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import {
-  FindManyOptions,
-  FindOneOptions,
-  FindOperator,
-  In,
-  Repository,
-} from 'typeorm';
+import { FindManyOptions, FindOneOptions, In, Repository } from 'typeorm';
 import List from 'src/entities/list.entity';
 import UsersService from './users.service';
 import { validateOrThrow } from 'src/utils/service-helper';
@@ -47,7 +41,7 @@ export default class ListsService {
     const result = await this.listsRepository.save(newList);
     // ToDo: Log signed in user
     Logger.log(
-      `User 'Leo' (........) created a new list '${result.displayName}' (${result.id}).`,
+      `User 'Leo' (........) created new list '${result.displayName}' (${result.id}).`,
     );
     return result;
   }
@@ -99,8 +93,6 @@ export default class ListsService {
       // ToDo: Check whether signed in user is listOwner
       this.listsRepository.delete({ id });
       await this.listsRepository.delete(id);
-      // Delete list members
-      // Delete list entries
       // ToDo: Replace with signed in user
       Logger.log(
         `User 'Leo' (............) deleted list '${list.displayName}' (${list.id}).`,

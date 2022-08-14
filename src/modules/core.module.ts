@@ -1,8 +1,9 @@
 import { Global, Module } from '@nestjs/common';
+import Configuration from 'src/configuration/configuration';
 
 @Global()
 @Module({
-  providers: [],
+  providers: [Configuration],
   exports: [],
 })
 export default class CoreModule {}

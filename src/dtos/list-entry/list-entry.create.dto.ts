@@ -1,12 +1,12 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import ListEntryDto from './list-entry.dto';
+import { AutoMap } from '@automapper/classes';
+import { ApiProperty } from '@nestjs/swagger';
+import { listEntryProperties } from './list-entry.properties';
 
-export default class ListEntryCreateDto extends ListEntryDto {
-  @ApiProperty({
-    description: 'The list this list entry belongs to.',
-    example: 'some-list-uuid',
-    minLength: 36,
-    maxLength: 36,
-  })
+export default class ListEntryCreateDto {
+  @ApiProperty(listEntryProperties.text)
+  @AutoMap()
+  text: string;
+
+  @ApiProperty(listEntryProperties.listId)
   listId: string;
 }
