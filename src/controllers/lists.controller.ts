@@ -72,7 +72,8 @@ export default class ListsController {
     summary: 'Updates a list.',
   })
   async update(@Param('id') id: string, @Body() listUpdateDto: ListUpdateDto) {
-    return 'Updated!';
+    const updatedList = await this.service.update(id, listUpdateDto);
+    return mapper.map(updatedList, List, ListReadDto);
   }
 
   @Delete(':id')
