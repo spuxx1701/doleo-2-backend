@@ -29,6 +29,7 @@ export default class ListEntry {
 
   @ManyToOne(() => List, (list) => list.entries, {
     eager: true,
+    onDelete: 'CASCADE',
   })
   @AutoMap(() => List)
   list: List;

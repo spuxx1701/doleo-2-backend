@@ -91,8 +91,7 @@ export default class ListsService {
     const list = await this.listsRepository.findOneBy({ id });
     if (list) {
       // ToDo: Check whether signed in user is listOwner
-      this.listsRepository.delete({ id });
-      await this.listsRepository.delete(id);
+      await this.listsRepository.delete({ id });
       // ToDo: Replace with signed in user
       Logger.log(
         `User 'Leo' (............) deleted list '${list.displayName}' (${list.id}).`,
