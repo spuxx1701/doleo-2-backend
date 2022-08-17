@@ -51,7 +51,7 @@ export default class List {
   @IsOptional()
   @IsArray()
   @AutoMap(() => [ListEntry])
-  entries: ListEntry;
+  entries: ListEntry[];
 
   @ManyToOne(() => User, (user) => user.ownedLists, {
     eager: true,
