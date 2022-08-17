@@ -80,7 +80,8 @@ export default class ListsController {
   @ApiOperation({
     summary: "Deletes a list if the requesting user is the list's owner.",
   })
-  async remove(@Param('id') id: string) {
-    return await this.service.delete(id);
+  async remove(@Param('id') id: string): Promise<Record<string, never>> {
+    await this.service.delete(id);
+    return {};
   }
 }

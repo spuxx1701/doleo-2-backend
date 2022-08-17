@@ -67,7 +67,8 @@ export default class ListEntriesController {
     summary:
       'Deletes a list entry if the signed in user has access to that list.',
   })
-  async delete(@Param('id') id: string): Promise<void> {
-    return await this.service.delete(id);
+  async delete(@Param('id') id: string): Promise<Record<string, never>> {
+    await this.service.delete(id);
+    return {};
   }
 }
