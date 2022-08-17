@@ -48,6 +48,7 @@ export default class ListEntriesService {
     // ToDo: Log signed in user
     Logger.log(
       `User 'Leo' (............) created list entry '${result.text}' (${result.id}) for list '${result.list.displayName}' (${result.list.id}).`,
+      this.constructor.name,
     );
     return result;
   }
@@ -78,6 +79,7 @@ export default class ListEntriesService {
     // ToDo: Log signed in user
     Logger.log(
       `User 'Leo' (............) updated list entry '${result.text}' (${result.id}) for list '${result.list.displayName}' (${result.list.id}).`,
+      this.constructor.name,
     );
     return result;
   }
@@ -93,6 +95,7 @@ export default class ListEntriesService {
     // ToDo: Log signed in user
     Logger.log(
       `User 'Leo' (............) deleted list entry '${listEntry.text}' (${listEntry.id}) for list '${listEntry.list.displayName}' (${listEntry.list.id}).`,
+      this.constructor.name,
     );
   }
 }

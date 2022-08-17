@@ -42,6 +42,7 @@ export default class ListsService {
     // ToDo: Log signed in user
     Logger.log(
       `User 'Leo' (........) created new list '${result.displayName}' (${result.id}).`,
+      this.constructor.name,
     );
     return result;
   }
@@ -83,6 +84,7 @@ export default class ListsService {
     // ToDo: Log signed in user
     Logger.log(
       `User 'Leo' (............) updated list '${result.displayName}' (${result.id}).`,
+      this.constructor.name,
     );
     return result;
   }
@@ -95,6 +97,7 @@ export default class ListsService {
       // ToDo: Replace with signed in user
       Logger.log(
         `User 'Leo' (............) deleted list '${list.displayName}' (${list.id}).`,
+        this.constructor.name,
       );
     }
   }
