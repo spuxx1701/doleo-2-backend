@@ -17,12 +17,14 @@ export class LoggingInterceptor implements NestInterceptor {
       'Incoming request. ' +
         `URL: ${request.url}, Method: ${request.method}, ` +
         `from: ${request.ip}.`,
+      this.constructor.name,
     );
     return next.handle().pipe(
       tap(() => {
         const dateOut = new Date();
         Logger.log(
           `Request fulfilled after ${dateOut.getTime() - dateIn.getTime()}ms.`,
+          this.constructor.name,
         );
       }),
     );
