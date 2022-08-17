@@ -20,7 +20,7 @@ import ListEntriesService from 'src/services/list-entries.service';
 
 @UseInterceptors(ClassSerializerInterceptor, LoggingInterceptor)
 @ApiTags('List entries')
-@Controller('list-entries')
+@Controller('listEntries')
 export default class ListEntriesController {
   constructor(private service: ListEntriesService) {}
 
