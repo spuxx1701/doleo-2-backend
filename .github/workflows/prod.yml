@@ -8,4 +8,4 @@ on:
 
 jobs:
   lint:
-    uses: spuxx1701/ci/.github/workflows/npm_test.yml/v1.0
+    uses: spuxx1701/ci/.github/workflows/npm_test.yml@v1.0
