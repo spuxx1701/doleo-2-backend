@@ -8,6 +8,7 @@ on:
 jobs:
   lint:
     uses: spuxx1701/ci/.github/workflows/npm_lint.yml@v1.0
+
   docker_build_and_push:
     needs: lint
     uses: spuxx1701/ci/.github/workflows/docker_build_and_push.yml@v1.0
@@ -19,7 +20,7 @@ jobs:
       token: ${{ secrets.DOCKERHUB_TOKEN }}
 
   finish:
-    needs: docker_push
+    needs: docker_build_and_push
     runs-on: ubuntu-latest
     steps:
       - id: log
