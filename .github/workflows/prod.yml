@@ -11,9 +11,15 @@ jobs:
   docker_push:
     needs: lint
     uses: spuxx1701/ci/.github/workflows/npm_docker_push.yml@v1.0
-      with:
-        username: spuxx
-        repository_name: doleo-2-backend
-        environment: prod
-      secrets:
-        token:  ${{ secrets.DOCKERHUB_TOKEN }}
+    with:
+      username: spuxx
+      repository: doleo-2-backend
+      environment: prod
+    secrets:
+      token: ${{ secrets.DOCKERHUB_TOKEN }}
+
+  docker_deploy:
+    needs: docker_push
+    steps:
+      - id: log
+        run: echo ${{ needs.docker_push.outputs.tags }}
