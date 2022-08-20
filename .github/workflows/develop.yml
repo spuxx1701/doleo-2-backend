@@ -1,0 +1,10 @@
+name: develop
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  lint:
+    uses: spuxx1701/ci/.github/workflows/npm_lint.yml@v1.0
