@@ -38,7 +38,7 @@ export default class ListEntriesService {
       ListEntry,
     );
     const list = await this.listsService.findOne({
-      where: { id: listEntryCreateDto.listId },
+      where: { id: listEntryCreateDto.list },
     });
     if (!list) throw new BadRequestException('Invalid list id.');
     newListEntry.list = list;

@@ -60,20 +60,20 @@ export default class ListsService {
     if (!updatedList.owner) updatedList.owner = oldList.owner;
     if (!updatedList.members) updatedList.members = oldList.members;
     // ToDo: Check whether signed in user is listOwner
-    if (listUpdateDto.ownerId) {
+    if (listUpdateDto.owner) {
       // Find owner
       const newOwner = await this.usersService.findOne({
-        where: { id: listUpdateDto.ownerId },
+        where: { id: listUpdateDto.owner },
       });
       if (!newOwner) {
         throw new BadRequestException('Owner is invalid.');
       }
       updatedList.owner = newOwner;
     }
-    if (listUpdateDto.memberIds) {
+    if (listUpdateDto.members) {
       // Find members
       const newMembers = await this.usersService.findMany({
-        where: { id: In(listUpdateDto.memberIds) },
+        where: { id: In(listUpdateDto.members) },
       });
       updatedList.members = newMembers;
     }

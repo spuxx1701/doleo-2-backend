@@ -8,5 +8,5 @@ export default class ListEntryCreateDto {
   text: string;
 
   @ApiProperty(listEntryProperties.listId)
-  listId: string;
+  list: string;
 }

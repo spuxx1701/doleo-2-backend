@@ -20,9 +20,9 @@ export default class ListUpdateDto {
 
   @ApiProperty(listProperties.ownerId)
   @ApiPropertyOptional()
-  ownerId: string;
+  owner: string;
 
   @ApiProperty(listProperties.memberIds)
   @ApiPropertyOptional()
-  memberIds?: string[];
+  members?: string[];
 }
