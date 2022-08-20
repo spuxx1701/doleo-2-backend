@@ -17,4 +17,4 @@ COPY . .
 RUN npm run build
 
 # Start the server using the production build
-RUN npm run start:prod
+CMD [ "node", "dist/main.js" ]
