@@ -15,7 +15,7 @@ jobs:
     with:
       username: spuxx
       repository: doleo-2-backend
-      environment: integrate
+      environment: integration
     secrets:
       token: ${{ secrets.DOCKERHUB_TOKEN }}
 
