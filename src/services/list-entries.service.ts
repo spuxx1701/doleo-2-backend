@@ -1,6 +1,5 @@
 import {
   BadRequestException,
-  Body,
   Injectable,
   Logger,
   NotFoundException,
@@ -13,7 +12,6 @@ import ListEntryUpdateDto from 'src/dtos/list-entry/list-entry.update.dto';
 import { mapper } from 'src/mappings/mapper';
 import ListsService from './lists.service';
 import { validateOrThrow } from 'src/utils/service-helper';
-import ListReadDto from 'src/dtos/list/list.read.dto';
 
 @Injectable()
 export default class ListEntriesService {
