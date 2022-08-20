@@ -1,9 +1,9 @@
-name: prod
+name: production
 
 on:
   push:
     branches:
-      - develop
+      - master
 
 jobs:
   lint:
@@ -15,7 +15,7 @@ jobs:
     with:
       username: spuxx
       repository: doleo-2-backend
-      environment: dev
+      environment: production
     secrets:
       token: ${{ secrets.DOCKERHUB_TOKEN }}
 
