@@ -10,7 +10,7 @@ jobs:
     uses: spuxx1701/ci/.github/workflows/npm_lint.yml@v1.0
   docker_push:
     needs: lint
-    uses: spuxx1701/ci/.github/workflows/npm_docker_push.yml@v1.0
+    uses: spuxx1701/ci/.github/workflows/docker_push.yml@v1.0
     with:
       username: spuxx
       repository: doleo-2-backend
