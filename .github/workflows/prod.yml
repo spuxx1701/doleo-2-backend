@@ -8,3 +8,12 @@ on:
 jobs:
   lint:
     uses: spuxx1701/ci/.github/workflows/npm_lint.yml@v1.0
+  docker_push:
+    needs: lint
+    uses: spuxx1701/ci/.github/workflows/npm_docker_push.yml@v1.0
+      with:
+        username: spuxx
+        repository_name: doleo-2-backend
+        environment: prod
+      secrets:
+        token:  ${{ secrets.DOCKERHUB_TOKEN }}
