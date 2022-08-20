@@ -1,4 +1,7 @@
-.git
-.env
-.eslintcache
+Dockerfile
+.dockerignore
 node_modules
+npm-debug.log
+dist
+.git
+.eslintcache
