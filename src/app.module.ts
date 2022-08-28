@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ScheduleModule } from '@nestjs/schedule';
+import AuthModule from './auth/auth.module';
 import UsersModule from './modules/users.module';
 import ListsModule from './modules/lists.module';
 import ListEntriesModule from './modules/list-entries.module';
@@ -10,7 +12,10 @@ import PingsModule from './modules/ping.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    ScheduleModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'mariadb',
       host: process.env.DATABASE_HOST,
@@ -27,6 +32,7 @@ import PingsModule from './modules/ping.module';
     ListEntriesModule,
     FamiliesModule,
     PingsModule,
+    AuthModule,
   ],
 })
 export class AppModule {}

@@ -23,6 +23,38 @@ export default class PingsService {
     return this.repository.findOne(options);
   }
 
+  async findAllReceived() {
+    // TODO: Determine signed in user
+    const user = await this.usersService.findOne({
+      where: { displayName: 'Leo' },
+    });
+    return await this.findMany({
+      where: {
+        receiver: user,
+        seen: false,
+      },
+      relations: {
+        sender: true,
+      },
+    });
+  }
+
+  async findAllSent() {
+    // TODO: Determine signed in user
+    const user = await this.usersService.findOne({
+      where: { displayName: 'Leo' },
+    });
+    return await this.findMany({
+      where: {
+        sender: user,
+        seen: false,
+      },
+      relations: {
+        receiver: true,
+      },
+    });
+  }
+
   async create(pingCreateDto: PingCreateDto): Promise<Ping> {
     const newPing = mapper.map(pingCreateDto, PingCreateDto, Ping) as Ping;
     // Find receiver
