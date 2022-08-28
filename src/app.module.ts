@@ -6,6 +6,7 @@ import ListsModule from './modules/lists.module';
 import ListEntriesModule from './modules/list-entries.module';
 import FamiliesModule from './modules/family.module';
 import CoreModule from './modules/core.module';
+import PingsModule from './modules/ping.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import CoreModule from './modules/core.module';
     ListsModule,
     ListEntriesModule,
     FamiliesModule,
+    PingsModule,
   ],
 })
 export class AppModule {}
