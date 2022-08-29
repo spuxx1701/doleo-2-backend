@@ -36,6 +36,9 @@ export default class ListEntriesService {
         user,
       );
     }
+    if (!listEntry) {
+      throw new NotFoundException();
+    }
     return listEntry;
   }
 
@@ -89,7 +92,6 @@ export default class ListEntriesService {
     await this.listsService.validateListAccess(updatedListEntry.list, user);
     validateOrThrow(updatedListEntry);
     const result = await this.repository.save(updatedListEntry);
-    // ToDo: Log signed in user
     Logger.log(
       `User '${user.displayName}' (${user.id}) updated list entry '${result.text}' (${result.id}) for list '${result.list.displayName}' (${result.list.id}).`,
       this.constructor.name,
@@ -97,17 +99,16 @@ export default class ListEntriesService {
     return result;
   }
 
-  async delete(id: string): Promise<void> {
+  async delete(id: string, user: User): Promise<void> {
     const listEntry = await this.repository.findOne({
       where: { id },
       relations: { list: true },
     });
     if (!listEntry) throw new NotFoundException();
-    // ToDo: Check whether signed in user has access to that list
+    await this.listsService.validateListAccess(listEntry.list, user);
     await this.repository.delete(id);
-    // ToDo: Log signed in user
     Logger.log(
-      `User 'Leo' (............) deleted list entry '${listEntry.text}' (${listEntry.id}) for list '${listEntry.list.displayName}' (${listEntry.list.id}).`,
+      `User '${user.displayName}' (${user.id}) deleted list entry '${listEntry.text}' (${listEntry.id}) for list '${listEntry.list.displayName}' (${listEntry.list.id}).`,
       this.constructor.name,
     );
   }

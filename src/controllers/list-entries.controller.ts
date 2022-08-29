@@ -89,7 +89,7 @@ export default class ListEntriesController {
       'Deletes a list entry if the signed in user has access to that list.',
   })
   async delete(@Param('id') id: string): Promise<Record<string, never>> {
-    await this.service.delete(id);
+    await this.service.delete(id, request.user as User);
     return {};
   }
 }
