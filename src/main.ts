@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { createMappings } from './mappings/mappings';
 import { ValidationPipe } from '@nestjs/common';
+import { buildSwaggerConfig } from './config/swagger.config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -10,12 +11,7 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe());
 
-  const config = new DocumentBuilder()
-    .setTitle('Doleo2 API')
-    .setDescription('API for the Doleo2 webapp.')
-    .setVersion('1.0')
-    .build();
-  const document = SwaggerModule.createDocument(app, config);
+  const document = SwaggerModule.createDocument(app, buildSwaggerConfig());
   SwaggerModule.setup('/swagger', app, document);
 
   createMappings();

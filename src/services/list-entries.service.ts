@@ -12,40 +12,56 @@ import ListEntryUpdateDto from 'src/dtos/list-entry/list-entry.update.dto';
 import { mapper } from 'src/mappings/mapper';
 import ListsService from './lists.service';
 import { validateOrThrow } from 'src/utils/service-helper';
+import User from 'src/entities/user.entity';
 
 @Injectable()
 export default class ListEntriesService {
   constructor(
     @InjectRepository(ListEntry)
-    private listEntriesRepository: Repository<ListEntry>,
+    private repository: Repository<ListEntry>,
     private listsService: ListsService,
   ) {}
 
-  async findMany(options?: FindManyOptions<ListEntry>) {
-    return await this.listEntriesRepository.find(options);
+  async findOne(options: FindOneOptions<ListEntry>, user: User) {
+    const listEntry = await this.repository.findOne(options);
+    if (listEntry) {
+      await this.listsService.findOne(
+        {
+          where: { id: listEntry.list.id },
+          relations: {
+            owner: true,
+            members: true,
+          },
+        },
+        user,
+      );
+    }
+    return listEntry;
   }
 
-  async findOne(options: FindOneOptions<ListEntry>) {
-    return await this.listEntriesRepository.findOne(options);
-  }
-
-  async create(listEntryCreateDto: ListEntryCreateDto): Promise<ListEntry> {
+  async create(
+    listEntryCreateDto: ListEntryCreateDto,
+    user: User,
+  ): Promise<ListEntry> {
     const newListEntry = mapper.map(
       listEntryCreateDto,
       ListEntryCreateDto,
       ListEntry,
     );
-    const list = await this.listsService.findOne({
-      where: { id: listEntryCreateDto.list },
-    });
+    const list = await this.listsService.findOne(
+      {
+        where: { id: listEntryCreateDto.list },
+      },
+      user,
+    );
+    this.listsService.validateListAccess(list, user);
     if (!list) throw new BadRequestException('Invalid list id.');
+    await this.listsService.validateListAccess(list, user);
     newListEntry.list = list;
-    // ToDo: Check whether signed in user has access to that list
     validateOrThrow(newListEntry);
-    const result = await this.listEntriesRepository.save(newListEntry);
-    // ToDo: Log signed in user
+    const result = await this.repository.save(newListEntry);
     Logger.log(
-      `User 'Leo' (............) created list entry '${result.text}' (${result.id}) for list '${result.list.displayName}' (${result.list.id}).`,
+      `User '${user.displayName}' (${user.id}) created list entry '${result.text}' (${result.id}) for list '${result.list.displayName}' (${result.list.id}).`,
       this.constructor.name,
     );
     return result;
@@ -54,6 +70,7 @@ export default class ListEntriesService {
   async update(
     id: string,
     listEntryUpdateDto: ListEntryUpdateDto,
+    user: User,
   ): Promise<ListEntry> {
     const partialListEntry = {
       id,
@@ -61,35 +78,33 @@ export default class ListEntriesService {
     };
     // Find and merge list entry. Includes a workaround because TypeORM's preload does
     // not load eager relations: https://github.com/typeorm/typeorm/issues/8944
-    const updatedListEntry = await this.listEntriesRepository.preload(
-      partialListEntry,
-    );
+    const updatedListEntry = await this.repository.preload(partialListEntry);
     if (!updatedListEntry) throw new NotFoundException();
     updatedListEntry.list = (
-      await this.listEntriesRepository.findOne({
+      await this.repository.findOne({
         where: { id },
         relations: { list: true },
       })
     ).list;
-    // ToDo: Check whether signed in user has access to that list
+    await this.listsService.validateListAccess(updatedListEntry.list, user);
     validateOrThrow(updatedListEntry);
-    const result = await this.listEntriesRepository.save(updatedListEntry);
+    const result = await this.repository.save(updatedListEntry);
     // ToDo: Log signed in user
     Logger.log(
-      `User 'Leo' (............) updated list entry '${result.text}' (${result.id}) for list '${result.list.displayName}' (${result.list.id}).`,
+      `User '${user.displayName}' (${user.id}) updated list entry '${result.text}' (${result.id}) for list '${result.list.displayName}' (${result.list.id}).`,
       this.constructor.name,
     );
     return result;
   }
 
   async delete(id: string): Promise<void> {
-    const listEntry = await this.listEntriesRepository.findOne({
+    const listEntry = await this.repository.findOne({
       where: { id },
       relations: { list: true },
     });
     if (!listEntry) throw new NotFoundException();
     // ToDo: Check whether signed in user has access to that list
-    await this.listEntriesRepository.delete(id);
+    await this.repository.delete(id);
     // ToDo: Log signed in user
     Logger.log(
       `User 'Leo' (............) deleted list entry '${listEntry.text}' (${listEntry.id}) for list '${listEntry.list.displayName}' (${listEntry.list.id}).`,

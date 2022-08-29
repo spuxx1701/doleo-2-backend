@@ -2,16 +2,20 @@ import {
   ClassSerializerInterceptor,
   Controller,
   Get,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import PingReadDto from 'src/dtos/ping/ping.read.dto';
 import { LoggingInterceptor } from 'src/interceptors/logging';
 import PingsService from 'src/services/pings.service';
 
 @UseInterceptors(ClassSerializerInterceptor, LoggingInterceptor)
-@ApiTags('Pings (received)')
-@Controller('receivedPings')
+@ApiTags('Pings (incoming)')
+@Controller('incomingPings')
+@UseGuards(JwtAuthGuard)
+@ApiBearerAuth('access-token')
 export default class PingsIncomingController {
   constructor(private service: PingsService) {}
 

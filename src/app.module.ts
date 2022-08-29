@@ -24,6 +24,7 @@ import PingsModule from './modules/ping.module';
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_DB,
       autoLoadEntities: true,
+      logging: process.env.DEBUG === 'true',
       synchronize: process.env.DATABASE_SYNCHRONIZE.toLowerCase() === 'true',
     }),
     CoreModule,

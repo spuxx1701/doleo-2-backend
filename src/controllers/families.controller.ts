@@ -3,9 +3,11 @@ import {
   Controller,
   Get,
   Param,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import FamilyDto from 'src/dtos/family/family.dto';
 import Family from 'src/entities/family.entity';
 import { LoggingInterceptor } from 'src/interceptors/logging';
@@ -15,6 +17,8 @@ import FamiliesService from 'src/services/families.service';
 @UseInterceptors(ClassSerializerInterceptor, LoggingInterceptor)
 @ApiTags('Families')
 @Controller('families')
+@UseGuards(JwtAuthGuard)
+@ApiBearerAuth('access-token')
 export default class FamiliesController {
   constructor(private service: FamiliesService) {}
 

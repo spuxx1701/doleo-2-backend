@@ -3,9 +3,11 @@ import {
   Controller,
   Get,
   Param,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import UserPublicDto from 'src/dtos/user/user.public';
 import User from 'src/entities/user.entity';
 import { LoggingInterceptor } from 'src/interceptors/logging';
@@ -15,6 +17,8 @@ import UsersService from 'src/services/users.service';
 @UseInterceptors(ClassSerializerInterceptor, LoggingInterceptor)
 @ApiTags('Users')
 @Controller('users')
+@UseGuards(JwtAuthGuard)
+@ApiBearerAuth('access-token')
 export default class UsersController {
   constructor(private service: UsersService) {}
 
