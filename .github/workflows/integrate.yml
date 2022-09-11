@@ -7,15 +7,16 @@ on:
 
 jobs:
   lint:
-    uses: spuxx1701/ci/.github/workflows/npm_lint.yml@v1.1
+    uses: spuxx1701/ci/.github/workflows/npm_lint.yml@v1.3
 
   docker_deploy:
     needs: lint
-    uses: spuxx1701/ci/.github/workflows/docker_deploy.yml@v1.1
+    uses: spuxx1701/ci/.github/workflows/docker_deploy.yml@v1.3
     with:
       username: spuxx
       repository: doleo-2-backend
       environment: integrate
+      dockerfile: Dockerfile
     secrets:
       token: ${{ secrets.DOCKERHUB_TOKEN }}
       ssh_host: ${{ secrets.SSH_HOST }}
