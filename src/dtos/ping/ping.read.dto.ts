@@ -1,6 +1,6 @@
 import { AutoMap } from '@automapper/classes';
 import { ApiProperty } from '@nestjs/swagger';
-import UserPublicDto from '../user/user.public';
+import UserReadDto from '../user/user.read';
 import { pingProperties } from './ping.properties';
 
 export default class PingReadDto {
@@ -13,14 +13,14 @@ export default class PingReadDto {
   @ApiProperty({
     description: pingProperties.sender.description,
   })
-  @AutoMap(() => UserPublicDto)
-  readonly sender: UserPublicDto;
+  @AutoMap(() => UserReadDto)
+  readonly sender: UserReadDto;
 
   @ApiProperty({
     description: pingProperties.receiver.description,
   })
-  @AutoMap(() => UserPublicDto)
-  readonly receiver: UserPublicDto;
+  @AutoMap(() => UserReadDto)
+  readonly receiver: UserReadDto;
 
   @ApiProperty({
     description: pingProperties.seen.description,

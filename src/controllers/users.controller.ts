@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import UserPublicDto from 'src/dtos/user/user.public';
+import UserReadDto from 'src/dtos/user/user.read';
 import User from 'src/entities/user.entity';
 import { LoggingInterceptor } from 'src/interceptors/logging';
 import { mapper } from 'src/mappings/mapper';
@@ -26,20 +26,20 @@ export default class UsersController {
   @ApiOperation({
     summary: 'Retrieves all users. Only includes public information.',
   })
-  async findMany(): Promise<UserPublicDto[]> {
+  async findMany(): Promise<UserReadDto[]> {
     const users = await this.service.findMany({ relations: { family: true } });
-    return mapper.mapArray(users, User, UserPublicDto);
+    return mapper.mapArray(users, User, UserReadDto);
   }
 
   @Get(':id')
   @ApiOperation({
     summary: 'Retrieves a user by id. Only includes public information.',
   })
-  async findOne(@Param('id') id: string): Promise<UserPublicDto> {
+  async findOne(@Param('id') id: string): Promise<UserReadDto> {
     const user = await this.service.findOne({
       where: { id },
       relations: { family: true },
     });
-    return mapper.map(user, User, UserPublicDto);
+    return mapper.map(user, User, UserReadDto);
   }
 }
