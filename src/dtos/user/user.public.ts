@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { AutoMap } from '@automapper/classes';
 import FamilyDto from '../family/family.dto';
 
-export default class UserDto {
+export default class UserPublicDto {
   @ApiProperty({
     description: 'The unique id of the user.',
   })

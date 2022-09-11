@@ -7,13 +7,17 @@ import {
   Param,
   Post,
   Put,
+  Request,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import ListEntryCreateDto from 'src/dtos/list-entry/list-entry.create.dto';
 import ListEntryReadDto from 'src/dtos/list-entry/list-entry.read.dto';
 import ListEntryUpdateDto from 'src/dtos/list-entry/list-entry.update.dto';
 import ListEntry from 'src/entities/list-entry.entity';
+import User from 'src/entities/user.entity';
 import { LoggingInterceptor } from 'src/interceptors/logging';
 import { mapper } from 'src/mappings/mapper';
 import ListEntriesService from 'src/services/list-entries.service';
@@ -21,6 +25,8 @@ import ListEntriesService from 'src/services/list-entries.service';
 @UseInterceptors(ClassSerializerInterceptor, LoggingInterceptor)
 @ApiTags('List entries')
 @Controller('listEntries')
+@UseGuards(JwtAuthGuard)
+@ApiBearerAuth('access-token')
 export default class ListEntriesController {
   constructor(private service: ListEntriesService) {}
 
@@ -29,11 +35,17 @@ export default class ListEntriesController {
     summary:
       'Returns a specific list entry if the signed in user has access to the list.',
   })
-  async findOne(@Param('id') id: string): Promise<ListEntryReadDto> {
-    const listEntry = await this.service.findOne({
-      where: { id },
-      relations: { list: true },
-    });
+  async findOne(
+    @Param('id') id: string,
+    @Request() request,
+  ): Promise<ListEntryReadDto> {
+    const listEntry = await this.service.findOne(
+      {
+        where: { id },
+        relations: { list: true },
+      },
+      request.user as User,
+    );
     return mapper.map(listEntry, ListEntry, ListEntryReadDto);
   }
 
@@ -43,9 +55,13 @@ export default class ListEntriesController {
       'Creates a new list entry for the given list if the signed in user has access to that list.',
   })
   async create(
+    @Request() request,
     @Body() listEntryCreateDto: ListEntryCreateDto,
   ): Promise<ListEntryReadDto> {
-    const createdListEntry = await this.service.create(listEntryCreateDto);
+    const createdListEntry = await this.service.create(
+      listEntryCreateDto,
+      request.user as User,
+    );
     return mapper.map(createdListEntry, ListEntry, ListEntryReadDto);
   }
 
@@ -56,9 +72,14 @@ export default class ListEntriesController {
   })
   async update(
     @Param('id') id: string,
+    @Request() request,
     @Body() listEntryUpdateDto: ListEntryUpdateDto,
   ): Promise<ListEntryReadDto> {
-    const updatedListEntry = await this.service.update(id, listEntryUpdateDto);
+    const updatedListEntry = await this.service.update(
+      id,
+      listEntryUpdateDto,
+      request.user as User,
+    );
     return mapper.map(updatedListEntry, ListEntry, ListEntryReadDto);
   }
 
@@ -67,8 +88,11 @@ export default class ListEntriesController {
     summary:
       'Deletes a list entry if the signed in user has access to that list.',
   })
-  async delete(@Param('id') id: string): Promise<Record<string, never>> {
-    await this.service.delete(id);
+  async delete(
+    @Param('id') id: string,
+    @Request() request,
+  ): Promise<Record<string, never>> {
+    await this.service.delete(id, request.user as User);
     return {};
   }
 }
