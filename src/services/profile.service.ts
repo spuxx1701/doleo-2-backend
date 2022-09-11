@@ -1,10 +1,12 @@
 import {
   ForbiddenException,
   Injectable,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import ProfileUpdateDto from 'src/dtos/profile/profile.update.dto';
+import { mapper } from 'src/mappings/mapper';
 import { validateOrThrow } from 'src/utils/service-helper';
 import { Repository } from 'typeorm';
 import User from '../entities/user.entity';
@@ -16,7 +18,7 @@ export default class ProfileService {
     private repository: Repository<User>,
   ) {}
 
-  async find(string: id, user: User) {
+  async find(id: string, user: User) {
     if (user.id !== id) {
       throw new ForbiddenException();
     }
@@ -34,7 +36,7 @@ export default class ProfileService {
     id: string,
     profileUpdateDto: ProfileUpdateDto,
     user: User,
-  ): Promise<List> {
+  ): Promise<User> {
     if (user.id !== id) {
       throw new ForbiddenException();
     }
