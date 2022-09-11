@@ -36,6 +36,7 @@ export class AuthService {
     Logger.log(`User '${user.displayName}' (${user.id}) has signed in.`);
     return {
       access_token: this.jwtService.sign(payload),
+      sub: user.id,
     };
   }
 
