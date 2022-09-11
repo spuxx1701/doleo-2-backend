@@ -10,7 +10,7 @@ import {
 import { AutoMap } from '@automapper/classes';
 import Family from './family.entity';
 import List from './list.entity';
-import { IsNumber, IsString } from 'class-validator';
+import { IsEmail, IsNumber, IsString } from 'class-validator';
 
 @Entity()
 export default class User {
@@ -21,6 +21,7 @@ export default class User {
   @Column({ type: 'varchar', length: 50, unique: true })
   @AutoMap()
   @IsString()
+  @IsEmail()
   email: string;
 
   @Column({ type: 'varchar', length: 30 })
