@@ -3,7 +3,7 @@ name: integrate
 on:
   push:
     branches:
-      - integrate
+      - develop
 
 jobs:
   lint:
