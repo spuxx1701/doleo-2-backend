@@ -1,9 +1,9 @@
 import {
   IsArray,
   IsBoolean,
-  IsNotEmpty,
   IsOptional,
   IsString,
+  Length,
 } from 'class-validator';
 import {
   Entity,
@@ -28,13 +28,13 @@ export default class List {
 
   @Column({ type: 'varchar', length: '30' })
   @IsString()
-  @IsNotEmpty()
+  @Length(1, 30)
   @AutoMap()
   displayName: string;
 
   @Column({ type: 'varchar', length: '30' })
   @IsString()
-  @IsNotEmpty()
+  @Length(1, 30)
   @AutoMap()
   iconName: string;
 
