@@ -18,12 +18,9 @@ export default class ProfileService {
     private repository: Repository<User>,
   ) {}
 
-  async find(id: string, user: User) {
-    if (user.id !== id) {
-      throw new ForbiddenException();
-    }
+  async read(user: User): Promise<User> {
     const profile = await this.repository.findOne({
-      where: { id },
+      where: { id: user.id },
       relations: { family: true },
     });
     if (!profile) {
@@ -32,20 +29,13 @@ export default class ProfileService {
     return profile;
   }
 
-  async update(
-    id: string,
-    profileUpdateDto: ProfileUpdateDto,
-    user: User,
-  ): Promise<User> {
-    if (user.id !== id) {
-      throw new ForbiddenException();
-    }
+  async update(profileUpdateDto: ProfileUpdateDto, user: User): Promise<User> {
     const partialProfile = {
-      id,
+      id: user.id,
       ...mapper.map(profileUpdateDto, ProfileUpdateDto, User),
     };
     const updatedProfile = await this.repository.preload(partialProfile);
-    validateOrThrow(updatedProfile);
+    await validateOrThrow(updatedProfile);
     const result = await this.repository.save(updatedProfile);
     Logger.log(
       `User '${result.displayName}' (${result.id}) updated their profile.`,

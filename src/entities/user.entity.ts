@@ -10,6 +10,7 @@ import {
 import { AutoMap } from '@automapper/classes';
 import Family from './family.entity';
 import List from './list.entity';
+import { IsNumber, IsString } from 'class-validator';
 
 @Entity()
 export default class User {
@@ -19,18 +20,22 @@ export default class User {
 
   @Column({ type: 'varchar', length: 50, unique: true })
   @AutoMap()
+  @IsString()
   email: string;
 
   @Column({ type: 'varchar', length: 30 })
   @AutoMap()
+  @IsString()
   displayName: string;
 
   @Column()
   @AutoMap()
+  @IsString()
   password: string;
 
   @Column({ default: 0 })
   @AutoMap()
+  @IsNumber()
   selectedDesign: number;
 
   @ManyToOne(() => Family, (family) => family.members)
