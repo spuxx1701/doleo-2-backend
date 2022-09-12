@@ -3,7 +3,6 @@ import {
   ClassSerializerInterceptor,
   Controller,
   Get,
-  Param,
   Put,
   Request,
   UseGuards,
