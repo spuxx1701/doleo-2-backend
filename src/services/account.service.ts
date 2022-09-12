@@ -23,7 +23,7 @@ export default class AccountService {
     if (!account) {
       throw new NotFoundException();
     }
-    return account;
+    return { ...account, password: '' } as User;
   }
 
   async update(accountUpdateDto: AccountUpdateDto, user: User): Promise<User> {
@@ -44,6 +44,6 @@ export default class AccountService {
       `User '${result.displayName}' (${result.id}) updated their account.`,
       this.constructor.name,
     );
-    return result;
+    return { ...result, password: '' } as User;
   }
 }

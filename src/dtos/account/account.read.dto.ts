@@ -20,6 +20,10 @@ export default class AccountReadDto {
   @AutoMap()
   readonly email: string;
 
+  @ApiProperty(accountProperties.password)
+  @AutoMap()
+  readonly password: string;
+
   @ApiProperty(accountProperties.family)
   @AutoMap(() => FamilyDto)
   readonly family: FamilyDto;
