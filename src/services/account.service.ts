@@ -31,11 +31,15 @@ export default class AccountService {
       id: user.id,
       ...mapper.map(accountUpdateDto, AccountUpdateDto, User),
     };
-    // If provided, hash the password
     if (partialAccount.password) {
+      // If provided, hash the password
       partialAccount.password = await this.authService.hash(
         partialAccount.password,
       );
+    } else {
+      // If not provided (empty string), make sure to delete the property, so the ORM
+      // will not try to set an empty password (validation will also fail)
+      delete partialAccount.password;
     }
     const updatedAccount = await this.repository.preload(partialAccount);
     await validateOrThrow(updatedAccount);
