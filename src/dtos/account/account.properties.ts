@@ -1,4 +1,4 @@
-export const profileProperties = {
+export const accountProperties = {
   id: {
     description: 'Your unique id',
   },

@@ -1,26 +1,26 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { AutoMap } from '@automapper/classes';
 import FamilyDto from '../family/family.dto';
-import { profileProperties } from './profile.properties';
+import { accountProperties } from './account.properties';
 
-export default class ProfileReadDto {
-  @ApiProperty(profileProperties.id)
+export default class AccountReadDto {
+  @ApiProperty(accountProperties.id)
   @AutoMap()
   readonly id: string;
 
-  @ApiProperty(profileProperties.displayName)
+  @ApiProperty(accountProperties.displayName)
   @AutoMap()
   readonly displayName: string;
 
-  @ApiProperty(profileProperties.selectedDesign)
+  @ApiProperty(accountProperties.selectedDesign)
   @AutoMap()
   readonly selectedDesign: number;
 
-  @ApiProperty(profileProperties.email)
+  @ApiProperty(accountProperties.email)
   @AutoMap()
   readonly email: string;
 
-  @ApiProperty(profileProperties.family)
+  @ApiProperty(accountProperties.family)
   @AutoMap(() => FamilyDto)
   readonly family: FamilyDto;
 }

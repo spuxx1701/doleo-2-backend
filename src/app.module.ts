@@ -9,7 +9,7 @@ import ListEntriesModule from './modules/list-entries.module';
 import FamiliesModule from './modules/family.module';
 import CoreModule from './modules/core.module';
 import PingsModule from './modules/ping.module';
-import ProfileModule from './modules/profile.module';
+import AccountModule from './modules/account.module';
 
 @Module({
   imports: [
@@ -35,7 +35,7 @@ import ProfileModule from './modules/profile.module';
     FamiliesModule,
     PingsModule,
     AuthModule,
-    ProfileModule,
+    AccountModule,
   ],
 })
 export class AppModule {}

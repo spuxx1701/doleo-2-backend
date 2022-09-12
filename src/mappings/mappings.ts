@@ -15,8 +15,8 @@ import List from 'src/entities/list.entity';
 import Ping from 'src/entities/ping.entity';
 import User from 'src/entities/user.entity';
 import { mapper } from './mapper';
-import ProfileReadDto from 'src/dtos/profile/profile.read.dto';
-import ProfileUpdateDto from 'src/dtos/profile/profile.update.dto';
+import AccountReadDto from 'src/dtos/account/account.read.dto';
+import AccountUpdateDto from 'src/dtos/account/account.update.dto';
 
 export function createMappings() {
   createMap(mapper, ListEntry, ListEntryReadDto);
@@ -26,8 +26,8 @@ export function createMappings() {
   createMap(mapper, ListCreateDto, List);
   createMap(mapper, ListUpdateDto, List);
   createMap(mapper, User, UserReadDto);
-  createMap(mapper, User, ProfileReadDto);
-  createMap(mapper, ProfileUpdateDto, User);
+  createMap(mapper, User, AccountReadDto);
+  createMap(mapper, AccountUpdateDto, User);
   createMap(mapper, Family, FamilyDto);
   createMap(mapper, Ping, PingReadDto);
   createMap(mapper, PingCreateDto, Ping);
