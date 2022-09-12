@@ -33,7 +33,10 @@ export class AuthService {
       selectedDesign: user.selectedDesign,
       sub: user.id,
     };
-    Logger.log(`User '${user.displayName}' (${user.id}) has signed in.`);
+    Logger.log(
+      `User '${user.displayName}' (${user.id}) has signed in.`,
+      this.constructor.name,
+    );
     return {
       access_token: this.jwtService.sign(payload),
     };
