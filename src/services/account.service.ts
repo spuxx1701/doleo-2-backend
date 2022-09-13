@@ -73,7 +73,7 @@ export default class AccountService {
       user,
     } as TempPassword);
     Logger.log(
-      `User '${user.displayName}' (${user.id}) has requested a temporary password`,
+      `User '${user.displayName}' (${user.id}) has requested a temporary password.`,
       this.constructor.name,
     );
   }
