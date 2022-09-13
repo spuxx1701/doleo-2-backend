@@ -69,8 +69,9 @@ export default class AccountService {
       return;
     }
     const password = randomBytes(8).toString('hex');
+    const hashedPassword = await this.authService.hash(password);
     await this.tempPasswordRepository.insert({
-      password,
+      hashedPassword,
       user,
     } as TempPassword);
     Logger.log(
