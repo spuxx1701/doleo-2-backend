@@ -9,6 +9,7 @@ import { randomBytes } from 'crypto';
 import TempPassword from 'src/entities/temp-password';
 import { Cron } from '@nestjs/schedule';
 import { hash } from 'src/utils/auth-helper';
+import { MailService } from 'src/mail/mail.service';
 
 @Injectable()
 export default class AccountService {
@@ -17,6 +18,7 @@ export default class AccountService {
     private repository: Repository<User>,
     @InjectRepository(TempPassword)
     private tempPasswordRepository: Repository<TempPassword>,
+    private mailService: MailService,
   ) {}
 
   async read(user: User): Promise<User> {
@@ -67,7 +69,6 @@ export default class AccountService {
     }
     const plain = randomBytes(8).toString('hex');
     const hashed = await hash(plain);
-    Logger.log(plain, this.constructor.name);
     // Make sure a single user only ever has a single temporary password saved.
     const existingTempPasswords = await this.tempPasswordRepository.find({
       where: { user: user },
@@ -84,6 +85,8 @@ export default class AccountService {
       `User '${user.displayName}' (${user.id}) has requested a temporary password.`,
       this.constructor.name,
     );
+    // Send the email
+    await this.mailService.sendTemporaryPassword(user, plain);
   }
 
   /**

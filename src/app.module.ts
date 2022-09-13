@@ -10,6 +10,7 @@ import FamiliesModule from './modules/family.module';
 import CoreModule from './modules/core.module';
 import PingsModule from './modules/ping.module';
 import AccountModule from './modules/account.module';
+import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import AccountModule from './modules/account.module';
     PingsModule,
     AuthModule,
     AccountModule,
+    MailModule,
   ],
 })
 export class AppModule {}
