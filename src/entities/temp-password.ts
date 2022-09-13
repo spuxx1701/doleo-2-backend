@@ -1,3 +1,4 @@
+import { IsString } from 'class-validator';
 import {
   Column,
   CreateDateColumn,
@@ -15,7 +16,8 @@ export default class TempPassword {
   @ManyToOne(() => User)
   user: User;
 
-  @Column({ length: 16 })
+  @Column()
+  @IsString()
   password: string;
 
   @CreateDateColumn()

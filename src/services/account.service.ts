@@ -1,6 +1,5 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { AuthService } from 'src/auth/auth.service';
 import AccountUpdateDto from 'src/dtos/account/account.update.dto';
 import { mapper } from 'src/mappings/mapper';
 import { validateOrThrow } from 'src/utils/service-helper';
@@ -9,6 +8,7 @@ import User from '../entities/user.entity';
 import { randomBytes } from 'crypto';
 import TempPassword from 'src/entities/temp-password';
 import { Cron } from '@nestjs/schedule';
+import { hash } from 'src/utils/auth-helper';
 
 @Injectable()
 export default class AccountService {
@@ -17,7 +17,6 @@ export default class AccountService {
     private repository: Repository<User>,
     @InjectRepository(TempPassword)
     private tempPasswordRepository: Repository<TempPassword>,
-    private authService: AuthService,
   ) {}
 
   async read(user: User): Promise<User> {
@@ -38,9 +37,7 @@ export default class AccountService {
     };
     if (partialAccount.password) {
       // If provided, hash the password
-      partialAccount.password = await this.authService.hash(
-        partialAccount.password,
-      );
+      partialAccount.password = await hash(partialAccount.password);
     } else {
       // If not provided (empty string), make sure to delete the property, so the ORM
       // will not try to set an empty password (validation will also fail)
@@ -68,16 +65,33 @@ export default class AccountService {
       Logger.log(`Email '${email}' could not be found.`, this.constructor.name);
       return;
     }
-    const password = randomBytes(8).toString('hex');
-    const hashedPassword = await this.authService.hash(password);
+    const plain = randomBytes(8).toString('hex');
+    const hashed = await hash(plain);
+    Logger.log(plain, this.constructor.name);
+    // Make sure a single user only ever has a single temporary password saved.
+    const existingTempPasswords = await this.tempPasswordRepository.find({
+      where: { user: user },
+    });
+    for (const password of existingTempPasswords) {
+      await this.deleteTempPassword(password);
+    }
+    // Insert
     await this.tempPasswordRepository.insert({
-      hashedPassword,
+      password: hashed,
       user,
     } as TempPassword);
     Logger.log(
       `User '${user.displayName}' (${user.id}) has requested a temporary password.`,
       this.constructor.name,
     );
+  }
+
+  /**
+   * Looks up a temporary password for a given user.
+   * @param user The user.
+   */
+  async getTempPassword(user: User) {
+    return await this.tempPasswordRepository.findOne({ where: { user } });
   }
 
   /**

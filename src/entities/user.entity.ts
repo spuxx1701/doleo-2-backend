@@ -34,7 +34,6 @@ export default class User {
   @Column()
   @AutoMap()
   @IsString()
-  @Length(1, 255)
   password: string;
 
   @Column({ default: 0 })

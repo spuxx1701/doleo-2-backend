@@ -1,16 +1,16 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import * as bcrypt from 'bcrypt';
 import UsersService from 'src/services/users.service';
 import User from 'src/entities/user.entity';
-
-const saltRounds = 10;
+import AccountService from 'src/services/account.service';
+import { compare } from 'src/utils/auth-helper';
 
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
+    private accountService: AccountService,
   ) {}
 
   async validateUser(email: string, password: string) {
@@ -19,8 +19,16 @@ export class AuthService {
         email,
       },
     });
-    if (user && (await this.compare(password, user.password))) {
-      return user;
+    if (user) {
+      if (await compare(password, user.password)) {
+        return user;
+      }
+      // If the password did not match, we need to check whether user is
+      // logging in with a valid temporary password.
+      const tempPassword = await this.accountService.getTempPassword(user);
+      if (tempPassword && (await compare(password, tempPassword.password))) {
+        return user;
+      }
     }
     return null;
   }
@@ -40,15 +48,5 @@ export class AuthService {
     return {
       access_token: this.jwtService.sign(payload),
     };
-  }
-
-  async hash(plaintext: string) {
-    const hashed = await bcrypt.hash(plaintext, saltRounds);
-    return hashed;
-  }
-
-  async compare(plaintext: string, hash: string) {
-    const result = await bcrypt.compare(plaintext, hash);
-    return result;
   }
 }
