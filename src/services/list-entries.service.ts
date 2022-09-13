@@ -5,7 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindManyOptions, FindOneOptions, Repository } from 'typeorm';
+import { FindOneOptions, Repository } from 'typeorm';
 import ListEntry from 'src/entities/list-entry.entity';
 import ListEntryCreateDto from 'src/dtos/list-entry/list-entry.create.dto';
 import ListEntryUpdateDto from 'src/dtos/list-entry/list-entry.update.dto';
