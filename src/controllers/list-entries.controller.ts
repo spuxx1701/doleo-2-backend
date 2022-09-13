@@ -10,6 +10,8 @@ import {
   Request,
   UseGuards,
   UseInterceptors,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
@@ -22,9 +24,10 @@ import { LoggingInterceptor } from 'src/interceptors/logging';
 import { mapper } from 'src/mappings/mapper';
 import ListEntriesService from 'src/services/list-entries.service';
 
-@UseInterceptors(ClassSerializerInterceptor, LoggingInterceptor)
-@ApiTags('List entries')
 @Controller('listEntries')
+@ApiTags('List entries')
+@UseInterceptors(ClassSerializerInterceptor, LoggingInterceptor)
+@UsePipes(new ValidationPipe({ transform: true }))
 @UseGuards(JwtAuthGuard)
 @ApiBearerAuth('access-token')
 export default class ListEntriesController {

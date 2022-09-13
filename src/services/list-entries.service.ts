@@ -61,7 +61,7 @@ export default class ListEntriesService {
     if (!list) throw new BadRequestException('Invalid list id.');
     await this.listsService.validateListAccess(list, user);
     newListEntry.list = list;
-    validateOrThrow(newListEntry);
+    await validateOrThrow(newListEntry);
     const result = await this.repository.save(newListEntry);
     Logger.log(
       `User '${user.displayName}' (${user.id}) created list entry '${result.text}' (${result.id}) for list '${result.list.displayName}' (${result.list.id}).`,
@@ -90,7 +90,7 @@ export default class ListEntriesService {
       })
     ).list;
     await this.listsService.validateListAccess(updatedListEntry.list, user);
-    validateOrThrow(updatedListEntry);
+    await validateOrThrow(updatedListEntry);
     const result = await this.repository.save(updatedListEntry);
     Logger.log(
       `User '${user.displayName}' (${user.id}) updated list entry '${result.text}' (${result.id}) for list '${result.list.displayName}' (${result.list.id}).`,

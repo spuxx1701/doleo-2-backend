@@ -22,7 +22,6 @@ import ListUpdateDto from 'src/dtos/list/list.update.dto';
 import { LoggingInterceptor } from 'src/interceptors/logging';
 import ListCreateDto from 'src/dtos/list/list.create.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { request } from 'http';
 import User from 'src/entities/user.entity';
 
 @Controller('lists')

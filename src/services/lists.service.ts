@@ -95,7 +95,7 @@ export default class ListsService {
     }
     this.addOwnerToMembers(updatedList);
     // Validate and submit
-    validateOrThrow(updatedList);
+    await validateOrThrow(updatedList);
     const result = await this.repository.save(updatedList);
     Logger.log(
       `User '${user.displayName}' (${user.id}) updated list '${result.displayName}' (${result.id}).`,
