@@ -113,7 +113,7 @@ export default class AccountService {
    * Cron job: Once a day, remove temporary passwords that are older than
    * 24 hours.
    */
-  @Cron('* * 0 * * *')
+  @Cron('0 0 0 * * *')
   async cleanUpTemporaryPasswords() {
     const jobName = 'TempPasswordCleanup';
     const context = `${this.constructor.name} (${jobName})`;
