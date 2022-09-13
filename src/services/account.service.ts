@@ -4,10 +4,11 @@ import { AuthService } from 'src/auth/auth.service';
 import AccountUpdateDto from 'src/dtos/account/account.update.dto';
 import { mapper } from 'src/mappings/mapper';
 import { validateOrThrow } from 'src/utils/service-helper';
-import { Repository } from 'typeorm';
+import { LessThan, Repository } from 'typeorm';
 import User from '../entities/user.entity';
 import { randomBytes } from 'crypto';
 import TempPassword from 'src/entities/temp-password';
+import { Cron } from '@nestjs/schedule';
 
 @Injectable()
 export default class AccountService {
@@ -76,5 +77,42 @@ export default class AccountService {
       `User '${user.displayName}' (${user.id}) has requested a temporary password.`,
       this.constructor.name,
     );
+  }
+
+  /**
+   * Deletes a temporary password.
+   * @param id The id of the temporary password.
+   */
+  async deleteTempPassword(password: TempPassword): Promise<void> {
+    await this.tempPasswordRepository.delete(password.id);
+    Logger.log(
+      `Temporary password '${password.id}' has been removed.`,
+      this.constructor.name,
+    );
+  }
+
+  /**
+   * Cron job: Once a day, remove temporary passwords that are older than
+   * 24 hours.
+   */
+  @Cron('* * 0 * * *')
+  async cleanUpTemporaryPasswords() {
+    const jobName = 'TempPasswordCleanup';
+    const context = `${this.constructor.name} (${jobName})`;
+    Logger.log(`Starting job.`, context);
+    const threshold = new Date(new Date().getTime() - 24 * 60 * 60 * 1000);
+    const oldTempPasswords = await this.tempPasswordRepository.find({
+      where: {
+        createdAt: LessThan(threshold),
+      },
+    });
+    Logger.log(
+      `Found ${oldTempPasswords.length} outdated temporary passwords.`,
+      context,
+    );
+    for (const password of oldTempPasswords) {
+      await this.deleteTempPassword(password);
+    }
+    Logger.log(`Job finished.`, context);
   }
 }
