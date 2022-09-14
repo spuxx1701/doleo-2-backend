@@ -4,7 +4,6 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
 export default {
   transport: {
     host: process.env.MAIL_HOST,
-    port: 25,
     secure: false,
     auth: {
       user: process.env.MAIL_USER,
