@@ -1,6 +1,6 @@
-import { ApiProperty } from '@nestjs/swagger';
 import { AutoMap } from '@automapper/classes';
-import UserReadDto from '../user/user.read';
+import { ApiProperty } from '@nestjs/swagger';
+import UserReadDto from 'src/dtos/user/user.read';
 import ListEntryReadDto from '../list-entry/list-entry.read.dto';
 import { listProperties } from './list.properties';
 

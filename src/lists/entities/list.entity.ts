@@ -19,7 +19,7 @@ import {
 } from 'typeorm';
 import { AutoMap } from '@automapper/classes';
 import ListEntry from './list-entry.entity';
-import User from './user.entity';
+import User from '../../entities/user.entity';
 
 @Entity()
 export default class List {

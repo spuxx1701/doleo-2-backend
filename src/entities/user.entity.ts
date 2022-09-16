@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 import { AutoMap } from '@automapper/classes';
 import Family from './family.entity';
-import List from './list.entity';
+import List from '../lists/entities/list.entity';
 import { IsEmail, IsNumber, IsString, Length } from 'class-validator';
 
 @Entity()

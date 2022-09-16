@@ -6,14 +6,14 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOneOptions, In, Repository } from 'typeorm';
-import List from 'src/entities/list.entity';
-import UsersService from './users.service';
-import { validateOrThrow } from 'src/utils/service-helper';
-import ListUpdateDto from 'src/dtos/list/list.update.dto';
-import ListCreateDto from 'src/dtos/list/list.create.dto';
-import { mapper } from 'src/mappings/mapper';
 import User from 'src/entities/user.entity';
+import List from 'src/lists/entities/list.entity';
+import { mapper } from 'src/mappings/mapper';
+import UsersService from 'src/services/users.service';
+import { validateOrThrow } from 'src/utils/service-helper';
+import { FindOneOptions, In, Repository } from 'typeorm';
+import ListCreateDto from '../dtos/list/list.create.dto';
+import ListUpdateDto from '../dtos/list/list.update.dto';
 
 @Injectable()
 export default class ListsService {

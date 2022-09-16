@@ -14,15 +14,15 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
-import ListsService from 'src/services/lists.service';
-import List from 'src/entities/list.entity';
-import ListReadDto from 'src/dtos/list/list.read.dto';
-import { mapper } from 'src/mappings/mapper';
-import ListUpdateDto from 'src/dtos/list/list.update.dto';
-import { LoggingInterceptor } from 'src/interceptors/logging';
-import ListCreateDto from 'src/dtos/list/list.create.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import User from 'src/entities/user.entity';
+import { LoggingInterceptor } from 'src/interceptors/logging';
+import ListCreateDto from 'src/lists/dtos/list/list.create.dto';
+import ListReadDto from 'src/lists/dtos/list/list.read.dto';
+import ListUpdateDto from 'src/lists/dtos/list/list.update.dto';
+import List from 'src/lists/entities/list.entity';
+import ListsService from 'src/lists/services/lists.service';
+import { mapper } from 'src/mappings/mapper';
 
 @Controller('lists')
 @ApiTags('Lists')
