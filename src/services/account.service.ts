@@ -69,18 +69,14 @@ export default class AccountService {
     }
     const plain = randomBytes(8).toString('hex');
     const hashed = await hash(plain);
-    // Make sure a single user only ever has a single temporary password saved.
-    const existingTempPasswords = await this.tempPasswordRepository.find({
-      where: { user: user },
-    });
-    for (const password of existingTempPasswords) {
-      await this.deleteTempPassword(password);
-    }
-    // Insert
-    await this.tempPasswordRepository.insert({
-      password: hashed,
-      user,
-    } as TempPassword);
+    // Upsert with user as conflict field
+    await this.tempPasswordRepository.upsert(
+      {
+        password: hashed,
+        user,
+      } as TempPassword,
+      ['user'],
+    );
     Logger.log(
       `User '${user.displayName}' (${user.id}) has requested a temporary password.`,
       this.constructor.name,
