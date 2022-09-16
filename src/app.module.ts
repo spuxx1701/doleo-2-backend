@@ -4,7 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ScheduleModule } from '@nestjs/schedule';
 import AuthModule from './auth/auth.module';
 import UsersModule from './modules/users.module';
-import ListsModule from './lists/modules/lists.module';
+import ListsModule from './lists/lists.module';
 import FamiliesModule from './modules/family.module';
 import CoreModule from './modules/core.module';
 import PingsModule from './modules/ping.module';
