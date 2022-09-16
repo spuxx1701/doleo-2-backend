@@ -8,6 +8,8 @@ import ListEntriesController from './controllers/list-entries.controller';
 import ListsController from './controllers/lists.controller';
 import ListEntriesService from './services/list-entries.service';
 import ListsService from './services/lists.service';
+import ListInvitesController from './controllers/list-invites.controller';
+import ListInvitesService from './services/list-invites.service';
 
 @Module({
   imports: [
@@ -17,7 +19,7 @@ import ListsService from './services/lists.service';
     UsersModule,
   ],
   exports: [ListsService],
-  controllers: [ListsController, ListEntriesController],
-  providers: [ListsService, ListEntriesService],
+  controllers: [ListsController, ListEntriesController, ListInvitesController],
+  providers: [ListsService, ListEntriesService, ListInvitesService],
 })
 export default class ListsModule {}

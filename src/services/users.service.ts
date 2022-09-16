@@ -17,4 +17,8 @@ export default class UsersService {
   async findOne(options: FindOneOptions<User>): Promise<User> {
     return this.usersRepository.findOne(options);
   }
+
+  async save(user: User): Promise<User> {
+    return this.usersRepository.save(user);
+  }
 }

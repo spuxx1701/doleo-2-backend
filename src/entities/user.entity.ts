@@ -6,6 +6,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
+  Unique,
 } from 'typeorm';
 import { AutoMap } from '@automapper/classes';
 import Family from './family.entity';
@@ -13,6 +14,7 @@ import List from '../lists/entities/list.entity';
 import { IsEmail, IsNumber, IsString, Length } from 'class-validator';
 
 @Entity()
+@Unique(['email'])
 export default class User {
   @PrimaryGeneratedColumn('uuid')
   @AutoMap()

@@ -41,6 +41,8 @@ export class AuthService {
       selectedDesign: user.selectedDesign,
       sub: user.id,
     };
+    user.lastLogin = new Date();
+    this.usersService.save(user);
     Logger.log(
       `User '${user.displayName}' (${user.id}) has signed in.`,
       this.constructor.name,

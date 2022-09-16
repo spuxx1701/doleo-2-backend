@@ -6,10 +6,6 @@ export default class ListInviteCreateDto {
   @AutoMap()
   list: string;
 
-  @ApiProperty(listInviteProperties.sender)
-  @AutoMap()
-  sender: string;
-
   @ApiProperty(listInviteProperties.recipient)
   @AutoMap()
   recipient: string;

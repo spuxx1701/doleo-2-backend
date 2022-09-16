@@ -1,27 +1,34 @@
 import { AutoMap } from '@automapper/classes';
 import User from 'src/entities/user.entity';
 import List from 'src/lists/entities/list.entity';
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  Unique,
+} from 'typeorm';
 
 @Entity()
+@Unique(['list', 'sender', 'recipient'])
 export default class ListInvite {
   @PrimaryGeneratedColumn('uuid')
   @AutoMap()
   id: string;
 
-  @OneToOne(() => List)
+  @ManyToOne(() => List)
   @AutoMap(() => List)
   list: List;
 
-  @OneToOne(() => User)
+  @ManyToOne(() => User)
   @AutoMap(() => User)
   sender: User;
 
-  @OneToOne(() => User)
+  @ManyToOne(() => User)
   @AutoMap(() => User)
   recipient: User;
 
-  @Column()
+  @Column({ default: false })
   @AutoMap()
   wasRead: boolean;
 }
