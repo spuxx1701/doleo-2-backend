@@ -74,6 +74,26 @@ export default class ListsService {
     const oldList = await this.repository.findOneBy({ id });
     // Only the owner is allowed to change the list
     await this.validateListOwnership(oldList, user);
+    if (!updatedList.owner) updatedList.owner = oldList.owner;
+    if (!updatedList.members) updatedList.members = oldList.members;
+    if (listUpdateDto.owner) {
+      // Find new owner
+      const newOwner = await this.usersService.findOne({
+        where: { id: listUpdateDto.owner },
+      });
+      if (!newOwner) {
+        throw new BadRequestException('Owner is invalid.');
+      }
+      updatedList.owner = newOwner;
+    }
+    if (listUpdateDto.members) {
+      // Find members
+      const newMembers = await this.usersService.findMany({
+        where: { id: In(listUpdateDto.members) },
+      });
+      updatedList.members = newMembers;
+    }
+    this.addOwnerToMembers(updatedList);
     // Validate and submit
     await validateOrThrow(updatedList);
     const result = await this.repository.save(updatedList);
