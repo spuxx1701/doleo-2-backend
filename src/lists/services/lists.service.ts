@@ -84,15 +84,36 @@ export default class ListsService {
     return result;
   }
 
-  async delete(id: string, user: User): Promise<void> {
+  /**
+   * Deletes the list if the given user is the owner and makes the
+   * given user leave the list if they are a member. Otherwise,
+   * returns 403 Forbidden.
+   * @param id The list id.
+   * @param user The user.
+   */
+  async deleteOrLeave(id: string, user: User): Promise<void> {
     const list = await this.repository.findOneBy({ id });
     if (list) {
-      await this.validateListOwnership(list, user);
-      await this.repository.delete({ id });
-      Logger.log(
-        `User '${user.displayName}' (${user.id}) deleted list '${list.displayName}' (${list.id}).`,
-        this.constructor.name,
-      );
+      if (list.owner.id === user.id) {
+        // If the user is the owner, delete the list.
+        await this.repository.delete({ id });
+        Logger.log(
+          `User '${user.displayName}' (${user.id}) deleted list '${list.displayName}' (${list.id}).`,
+          this.constructor.name,
+        );
+      } else if (list.members.find((member) => member.id === user.id)) {
+        // If the user is a member, make them leave the list.
+        const index = list.members.findIndex((member) => member.id === user.id);
+        list.members.splice(index, 1);
+        await this.repository.delete({ id });
+        Logger.log(
+          `User '${user.displayName}' (${user.id}) left list '${list.displayName}' (${list.id}).`,
+          this.constructor.name,
+        );
+      } else {
+        // Else, return 403.
+        throw new ForbiddenException();
+      }
     }
   }
 
