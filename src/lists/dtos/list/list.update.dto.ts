@@ -17,12 +17,4 @@ export default class ListUpdateDto {
   @ApiPropertyOptional()
   @AutoMap()
   hasAmounts: boolean;
-
-  @ApiProperty(listProperties.ownerId)
-  @ApiPropertyOptional()
-  owner: string;
-
-  @ApiProperty(listProperties.memberIds)
-  @ApiPropertyOptional()
-  members?: string[];
 }
