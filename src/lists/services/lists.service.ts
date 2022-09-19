@@ -95,7 +95,7 @@ export default class ListsService {
     //   });
     //   updatedList.members = newMembers;
     // }
-    this.addOwnerToMembers(updatedList);
+    // this.addOwnerToMembers(updatedList);
     // Validate and submit
     await validateOrThrow(updatedList);
     const result = await this.repository.save(updatedList);
