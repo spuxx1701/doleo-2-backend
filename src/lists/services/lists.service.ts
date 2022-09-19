@@ -105,7 +105,7 @@ export default class ListsService {
         // If the user is a member, make them leave the list.
         const index = list.members.findIndex((member) => member.id === user.id);
         list.members.splice(index, 1);
-        await this.repository.delete({ id });
+        await this.repository.save({ id });
         Logger.log(
           `User '${user.displayName}' (${user.id}) left list '${list.displayName}' (${list.id}).`,
           this.constructor.name,
