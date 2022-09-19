@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   ClassSerializerInterceptor,
   Controller,
@@ -7,6 +8,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   Request,
   UseGuards,
   UseInterceptors,
@@ -20,6 +22,7 @@ import { LoggingInterceptor } from 'src/interceptors/logging';
 import { mapper } from 'src/mappings/mapper';
 import ListInviteCreateDto from '../dtos/list-invite/list-invite.create.dto';
 import ListInviteReadDto from '../dtos/list-invite/list-invite.read.dto';
+import ListInviteUpdateDto from '../dtos/list-invite/list-invite.update.dto';
 import ListInvite from '../entities/list-invite.entity';
 import ListInvitesService from '../services/list-invites.service';
 
@@ -32,11 +35,11 @@ import ListInvitesService from '../services/list-invites.service';
 export default class ListInvitesController {
   constructor(private service: ListInvitesService) {}
 
-  @Get('/incoming')
+  @Get()
   @ApiOperation({
-    summary: 'Returns all incoming list invites for the signed in user',
+    summary: 'Returns all incoming list invites for the signed in user.',
   })
-  async findIncoming(@Request() request): Promise<ListInviteReadDto[]> {
+  async findAll(@Request() request) {
     const invites = await this.service.findIncoming(request.user as User);
     return mapper.mapArray(invites, ListInvite, ListInviteReadDto);
   }
@@ -61,15 +64,24 @@ export default class ListInvitesController {
     return await this.service.delete(id, request.user);
   }
 
-  @Put(':id/markAsRead')
+  @Put(':id')
   @ApiOperation({
-    summary: 'Marks a list invitation as read.',
+    summary: 'Updates a list invite.',
   })
-  async markAsRead(
+  async update(
     @Param('id') id: string,
+    @Body() body: ListInviteUpdateDto,
     @Request() request,
   ): Promise<ListInviteReadDto> {
-    const invite = await this.service.markAsRead(id, request.user);
-    return mapper.map(invite, ListInvite, ListInviteReadDto);
+    if (body.notificationSent) {
+      const invite = await this.service.markAsNotificationSent(
+        id,
+        request.user,
+      );
+      return mapper.map(invite, ListInvite, ListInviteReadDto);
+    } else if (body.accept) {
+      const invite = await this.service.accept(id, request.user);
+      return mapper.map(invite, ListInvite, ListInviteReadDto);
+    }
   }
 }

@@ -21,7 +21,7 @@ export default class ListInviteReadDto {
   @AutoMap(() => UserReadDto)
   readonly recipient: UserReadDto;
 
-  @ApiProperty(listInviteProperties.wasRead)
+  @ApiProperty(listInviteProperties.notificationSent)
   @AutoMap()
-  readonly wasRead;
+  readonly notificationSent: boolean;
 }

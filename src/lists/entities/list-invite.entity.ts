@@ -3,10 +3,12 @@ import User from 'src/entities/user.entity';
 import List from 'src/lists/entities/list.entity';
 import {
   Column,
+  CreateDateColumn,
   Entity,
   ManyToOne,
   PrimaryGeneratedColumn,
   Unique,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity()
@@ -30,5 +32,11 @@ export default class ListInvite {
 
   @Column({ default: false })
   @AutoMap()
-  wasRead: boolean;
+  notificationSent: boolean;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

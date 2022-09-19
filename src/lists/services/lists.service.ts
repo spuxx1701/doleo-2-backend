@@ -158,4 +158,22 @@ export default class ListsService {
     );
     throw new ForbiddenException();
   }
+
+  /**
+   * Adds a user to a given list.
+   * @param list The list.
+   * @param user The user to add.
+   * @returns The updated list.
+   */
+  async addUserToMembers(list: List, user: User) {
+    if (!list.members.find((member) => member.id === user.id)) {
+      list.members = [user, ...list.members];
+    }
+    const updatedList = await this.repository.save(list);
+    Logger.log(
+      `User '${user.displayName}' (${user.id}) has joined list '${list.displayName}', (${list.id}).`,
+      this.constructor.name,
+    );
+    return updatedList;
+  }
 }

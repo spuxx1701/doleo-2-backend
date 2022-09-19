@@ -81,22 +81,36 @@ export default class ListInvitesService {
     );
   }
 
-  async markAsRead(id: string, user: User): Promise<ListInvite> {
-    const listInvite = await this.repository.findOne({
+  async markAsNotificationSent(id: string, user: User): Promise<ListInvite> {
+    const invite = await this.repository.findOne({
       where: { id },
       relations: { recipient: true },
     });
-    if (!listInvite) throw new NotFoundException();
+    if (!invite) throw new NotFoundException();
     // Check whether signed in user is the recipient
-    if (listInvite.recipient.id !== user.id) {
+    if (invite.recipient.id !== user.id) {
       throw new ForbiddenException();
     }
-    listInvite.wasRead = true;
-    const result = this.repository.save(listInvite);
+    invite.notificationSent = true;
+    const result = await this.repository.save(invite);
     Logger.log(
-      `User '${user.displayName}' (${user.id}) has marked list invite '${listInvite.id}' as read.`,
+      `User '${user.displayName}' (${user.id}) has marked list invite '${invite.id}' as read.`,
       this.constructor.name,
     );
     return result;
+  }
+
+  async accept(id: string, user: User): Promise<ListInvite> {
+    const invite = await this.repository.findOne({
+      where: { id },
+      relations: { list: true, recipient: true },
+    });
+    if (!invite) throw new NotFoundException();
+    // Check whether signed in user is the recipient
+    if (invite.recipient.id !== user.id) {
+      throw new ForbiddenException();
+    }
+    await this.listsService.addUserToMembers(invite.list, user);
+    return invite;
   }
 }
