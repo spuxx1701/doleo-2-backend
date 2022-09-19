@@ -18,15 +18,15 @@ export default class ListInvite {
   @AutoMap()
   id: string;
 
-  @ManyToOne(() => List)
+  @ManyToOne(() => List, { eager: true })
   @AutoMap(() => List)
   list: List;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, { eager: true })
   @AutoMap(() => User)
   sender: User;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, { eager: true })
   @AutoMap(() => User)
   recipient: User;
 
