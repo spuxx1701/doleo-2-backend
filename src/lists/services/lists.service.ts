@@ -6,14 +6,14 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOneOptions, In, Repository } from 'typeorm';
-import List from 'src/entities/list.entity';
-import UsersService from './users.service';
-import { validateOrThrow } from 'src/utils/service-helper';
-import ListUpdateDto from 'src/dtos/list/list.update.dto';
-import ListCreateDto from 'src/dtos/list/list.create.dto';
-import { mapper } from 'src/mappings/mapper';
 import User from 'src/entities/user.entity';
+import List from 'src/lists/entities/list.entity';
+import { mapper } from 'src/mappings/mapper';
+import UsersService from 'src/services/users.service';
+import { validateOrThrow } from 'src/utils/service-helper';
+import { FindOneOptions, In, Repository } from 'typeorm';
+import ListCreateDto from '../dtos/list/list.create.dto';
+import ListUpdateDto from '../dtos/list/list.update.dto';
 
 @Injectable()
 export default class ListsService {
@@ -74,28 +74,30 @@ export default class ListsService {
     const oldList = await this.repository.findOneBy({ id });
     // Only the owner is allowed to change the list
     await this.validateListOwnership(oldList, user);
-    if (!updatedList.owner) updatedList.owner = oldList.owner;
-    if (!updatedList.members) updatedList.members = oldList.members;
-    if (listUpdateDto.owner) {
-      // Find new owner
-      const newOwner = await this.usersService.findOne({
-        where: { id: listUpdateDto.owner },
-      });
-      if (!newOwner) {
-        throw new BadRequestException('Owner is invalid.');
-      }
-      updatedList.owner = newOwner;
-    }
-    if (listUpdateDto.members) {
-      // Find members
-      const newMembers = await this.usersService.findMany({
-        where: { id: In(listUpdateDto.members) },
-      });
-      updatedList.members = newMembers;
-    }
-    this.addOwnerToMembers(updatedList);
+    updatedList.owner = oldList.owner;
+    updatedList.members = oldList.members;
+    // if (!updatedList.owner) updatedList.owner = oldList.owner;
+    // if (!updatedList.members) updatedList.members = oldList.members;
+    // if (listUpdateDto.owner) {
+    //   // Find new owner
+    //   const newOwner = await this.usersService.findOne({
+    //     where: { id: listUpdateDto.owner.id },
+    //   });
+    //   if (!newOwner) {
+    //     throw new BadRequestException('Owner is invalid.');
+    //   }
+    //   updatedList.owner = newOwner;
+    // }
+    // if (listUpdateDto.members) {
+    //   // Find members
+    //   const newMembers = await this.usersService.findMany({
+    //     where: { id: In(listUpdateDto.members.i) },
+    //   });
+    //   updatedList.members = newMembers;
+    // }
+    // this.addOwnerToMembers(updatedList);
     // Validate and submit
-    validateOrThrow(updatedList);
+    await validateOrThrow(updatedList);
     const result = await this.repository.save(updatedList);
     Logger.log(
       `User '${user.displayName}' (${user.id}) updated list '${result.displayName}' (${result.id}).`,
@@ -104,15 +106,36 @@ export default class ListsService {
     return result;
   }
 
-  async delete(id: string, user: User): Promise<void> {
+  /**
+   * Deletes the list if the given user is the owner and makes the
+   * given user leave the list if they are a member. Otherwise,
+   * returns 403 Forbidden.
+   * @param id The list id.
+   * @param user The user.
+   */
+  async deleteOrLeave(id: string, user: User): Promise<void> {
     const list = await this.repository.findOneBy({ id });
     if (list) {
-      await this.validateListOwnership(list, user);
-      await this.repository.delete({ id });
-      Logger.log(
-        `User '${user.displayName}' (${user.id}) deleted list '${list.displayName}' (${list.id}).`,
-        this.constructor.name,
-      );
+      if (list.owner.id === user.id) {
+        // If the user is the owner, delete the list.
+        await this.repository.delete({ id });
+        Logger.log(
+          `User '${user.displayName}' (${user.id}) deleted list '${list.displayName}' (${list.id}).`,
+          this.constructor.name,
+        );
+      } else if (list.members.find((member) => member.id === user.id)) {
+        // If the user is a member, make them leave the list.
+        const index = list.members.findIndex((member) => member.id === user.id);
+        list.members.splice(index, 1);
+        await this.repository.save(list);
+        Logger.log(
+          `User '${user.displayName}' (${user.id}) left list '${list.displayName}' (${list.id}).`,
+          this.constructor.name,
+        );
+      } else {
+        // Else, return 403.
+        throw new ForbiddenException();
+      }
     }
   }
 
@@ -177,5 +200,23 @@ export default class ListsService {
       this.constructor.name,
     );
     throw new ForbiddenException();
+  }
+
+  /**
+   * Adds a user to a given list.
+   * @param list The list.
+   * @param user The user to add.
+   * @returns The updated list.
+   */
+  async addUserToMembers(list: List, user: User) {
+    if (!list.members.find((member) => member.id === user.id)) {
+      list.members = [user, ...list.members];
+    }
+    const updatedList = await this.repository.save(list);
+    Logger.log(
+      `User '${user.displayName}' (${user.id}) has joined list '${list.displayName}', (${list.id}).`,
+      this.constructor.name,
+    );
+    return updatedList;
   }
 }

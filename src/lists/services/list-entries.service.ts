@@ -5,14 +5,14 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindManyOptions, FindOneOptions, Repository } from 'typeorm';
-import ListEntry from 'src/entities/list-entry.entity';
-import ListEntryCreateDto from 'src/dtos/list-entry/list-entry.create.dto';
-import ListEntryUpdateDto from 'src/dtos/list-entry/list-entry.update.dto';
-import { mapper } from 'src/mappings/mapper';
-import ListsService from './lists.service';
-import { validateOrThrow } from 'src/utils/service-helper';
 import User from 'src/entities/user.entity';
+import { mapper } from 'src/mappings/mapper';
+import { validateOrThrow } from 'src/utils/service-helper';
+import { FindOneOptions, Repository } from 'typeorm';
+import ListEntryCreateDto from '../dtos/list-entry/list-entry.create.dto';
+import ListEntryUpdateDto from '../dtos/list-entry/list-entry.update.dto';
+import ListEntry from '../entities/list-entry.entity';
+import ListsService from './lists.service';
 
 @Injectable()
 export default class ListEntriesService {
@@ -61,7 +61,7 @@ export default class ListEntriesService {
     if (!list) throw new BadRequestException('Invalid list id.');
     await this.listsService.validateListAccess(list, user);
     newListEntry.list = list;
-    validateOrThrow(newListEntry);
+    await validateOrThrow(newListEntry);
     const result = await this.repository.save(newListEntry);
     Logger.log(
       `User '${user.displayName}' (${user.id}) created list entry '${result.text}' (${result.id}) for list '${result.list.displayName}' (${result.list.id}).`,
@@ -90,7 +90,7 @@ export default class ListEntriesService {
       })
     ).list;
     await this.listsService.validateListAccess(updatedListEntry.list, user);
-    validateOrThrow(updatedListEntry);
+    await validateOrThrow(updatedListEntry);
     const result = await this.repository.save(updatedListEntry);
     Logger.log(
       `User '${user.displayName}' (${user.id}) updated list entry '${result.text}' (${result.id}) for list '${result.list.displayName}' (${result.list.id}).`,

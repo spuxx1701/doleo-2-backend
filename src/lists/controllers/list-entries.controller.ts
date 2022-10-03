@@ -10,21 +10,24 @@ import {
   Request,
   UseGuards,
   UseInterceptors,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import ListEntryCreateDto from 'src/dtos/list-entry/list-entry.create.dto';
-import ListEntryReadDto from 'src/dtos/list-entry/list-entry.read.dto';
-import ListEntryUpdateDto from 'src/dtos/list-entry/list-entry.update.dto';
-import ListEntry from 'src/entities/list-entry.entity';
 import User from 'src/entities/user.entity';
 import { LoggingInterceptor } from 'src/interceptors/logging';
+import ListEntryCreateDto from 'src/lists/dtos/list-entry/list-entry.create.dto';
+import ListEntryReadDto from 'src/lists/dtos/list-entry/list-entry.read.dto';
+import ListEntryUpdateDto from 'src/lists/dtos/list-entry/list-entry.update.dto';
+import ListEntry from 'src/lists/entities/list-entry.entity';
+import ListEntriesService from 'src/lists/services/list-entries.service';
 import { mapper } from 'src/mappings/mapper';
-import ListEntriesService from 'src/services/list-entries.service';
 
-@UseInterceptors(ClassSerializerInterceptor, LoggingInterceptor)
-@ApiTags('List entries')
 @Controller('listEntries')
+@ApiTags('List entries')
+@UseInterceptors(ClassSerializerInterceptor, LoggingInterceptor)
+@UsePipes(new ValidationPipe({ transform: true }))
 @UseGuards(JwtAuthGuard)
 @ApiBearerAuth('access-token')
 export default class ListEntriesController {

@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { AutoMap } from '@automapper/classes';
-import UserPublicDto from '../user/user.public';
+import UserReadDto from '../user/user.read';
 
 export default class FamilyDto {
   @ApiProperty({
@@ -18,6 +18,6 @@ export default class FamilyDto {
   @ApiProperty({
     description: 'The family members.',
   })
-  @AutoMap(() => [UserPublicDto])
-  readonly members: UserPublicDto[];
+  @AutoMap(() => [UserReadDto])
+  readonly members: UserReadDto[];
 }

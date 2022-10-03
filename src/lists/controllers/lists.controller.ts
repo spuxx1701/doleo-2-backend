@@ -14,16 +14,15 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
-import ListsService from 'src/services/lists.service';
-import List from 'src/entities/list.entity';
-import ListReadDto from 'src/dtos/list/list.read.dto';
-import { mapper } from 'src/mappings/mapper';
-import ListUpdateDto from 'src/dtos/list/list.update.dto';
-import { LoggingInterceptor } from 'src/interceptors/logging';
-import ListCreateDto from 'src/dtos/list/list.create.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { request } from 'http';
 import User from 'src/entities/user.entity';
+import { LoggingInterceptor } from 'src/interceptors/logging';
+import ListCreateDto from 'src/lists/dtos/list/list.create.dto';
+import ListReadDto from 'src/lists/dtos/list/list.read.dto';
+import ListUpdateDto from 'src/lists/dtos/list/list.update.dto';
+import List from 'src/lists/entities/list.entity';
+import ListsService from 'src/lists/services/lists.service';
+import { mapper } from 'src/mappings/mapper';
 
 @Controller('lists')
 @ApiTags('Lists')
@@ -96,13 +95,15 @@ export default class ListsController {
 
   @Delete(':id')
   @ApiOperation({
-    summary: "Deletes a list if the requesting user is the list's owner.",
+    summary:
+      "Deletes a list if the requesting user is the list's owner and makes a user leave the list if the requesting user is a member.",
   })
   async remove(
     @Param('id') id: string,
     @Request() request,
   ): Promise<Record<string, never>> {
-    await this.service.delete(id, request.user as User);
+    if (this.service.validateListOwnership)
+      await this.service.deleteOrLeave(id, request.user as User);
     return {};
   }
 }

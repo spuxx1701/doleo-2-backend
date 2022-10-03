@@ -4,6 +4,7 @@ import {
   IsNotEmpty,
   IsOptional,
   IsString,
+  Length,
 } from 'class-validator';
 import {
   Entity,
@@ -18,7 +19,7 @@ import {
 } from 'typeorm';
 import { AutoMap } from '@automapper/classes';
 import ListEntry from './list-entry.entity';
-import User from './user.entity';
+import User from '../../entities/user.entity';
 
 @Entity()
 export default class List {
@@ -28,13 +29,13 @@ export default class List {
 
   @Column({ type: 'varchar', length: '30' })
   @IsString()
-  @IsNotEmpty()
+  @Length(1, 30)
   @AutoMap()
   displayName: string;
 
   @Column({ type: 'varchar', length: '30' })
   @IsString()
-  @IsNotEmpty()
+  @Length(1, 30)
   @AutoMap()
   iconName: string;
 

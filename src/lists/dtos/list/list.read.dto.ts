@@ -1,6 +1,6 @@
-import { ApiProperty } from '@nestjs/swagger';
 import { AutoMap } from '@automapper/classes';
-import UserPublicDto from '../user/user.public';
+import { ApiProperty } from '@nestjs/swagger';
+import UserReadDto from 'src/dtos/user/user.read';
 import ListEntryReadDto from '../list-entry/list-entry.read.dto';
 import { listProperties } from './list.properties';
 
@@ -22,12 +22,12 @@ export default class ListReadDto {
   readonly hasAmounts: boolean;
 
   @ApiProperty(listProperties.owner)
-  @AutoMap(() => UserPublicDto)
-  readonly owner: UserPublicDto;
+  @AutoMap(() => UserReadDto)
+  readonly owner: UserReadDto;
 
   @ApiProperty(listProperties.members)
-  @AutoMap(() => [UserPublicDto])
-  readonly members: UserPublicDto[];
+  @AutoMap(() => [UserReadDto])
+  readonly members: UserReadDto[];
 
   @ApiProperty(listProperties.entries)
   @AutoMap(() => [ListEntryReadDto])
