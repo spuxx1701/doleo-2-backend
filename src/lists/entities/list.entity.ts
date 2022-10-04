@@ -39,11 +39,23 @@ export default class List {
   @AutoMap()
   iconName: string;
 
+  @Column({ default: true })
+  @IsOptional()
+  @IsBoolean()
+  @AutoMap()
+  usesCheck: boolean;
+
   @Column({ default: false })
   @IsOptional()
   @IsBoolean()
   @AutoMap()
   hasAmounts: boolean;
+
+  @Column({ default: false })
+  @IsOptional()
+  @IsBoolean()
+  @AutoMap()
+  usesConfirmDelete: boolean;
 
   @OneToMany(() => ListEntry, (listEntry) => listEntry.list, {
     cascade: ['insert', 'remove'],

@@ -16,7 +16,16 @@ export const listProperties = {
     minLength: 1,
     maxLength: 30,
   },
+  usesCheck: {
+    description: 'Whether list entries can be checked and unchecked.',
+    default: true,
+  },
   hasAmounts: { description: 'Whether the list has amounts.', default: false },
+  usesConfirmDelete: {
+    description:
+      'If set to true, the user needs to confirm their action when deleting a list entry.',
+    default: false,
+  },
   owner: {
     description: 'Who owns the list.',
     example: { id: 'some-user-id', displayName: 'User' },

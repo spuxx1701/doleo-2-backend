@@ -13,8 +13,18 @@ export default class ListUpdateDto {
   @AutoMap()
   iconName: string;
 
+  @ApiProperty(listProperties.usesCheck)
+  @ApiPropertyOptional()
+  @AutoMap()
+  usesCheck: boolean;
+
   @ApiProperty(listProperties.hasAmounts)
   @ApiPropertyOptional()
   @AutoMap()
   hasAmounts: boolean;
+
+  @ApiProperty(listProperties.usesConfirmDelete)
+  @ApiPropertyOptional()
+  @AutoMap()
+  usesConfirmDelete: boolean;
 }
