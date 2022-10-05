@@ -17,9 +17,17 @@ export default class ListReadDto {
   @AutoMap()
   readonly iconName: string;
 
+  @ApiProperty(listProperties.usesCheck)
+  @AutoMap()
+  readonly usesCheck: boolean;
+
   @ApiProperty(listProperties.hasAmounts)
   @AutoMap()
   readonly hasAmounts: boolean;
+
+  @ApiProperty(listProperties.usesConfirmDelete)
+  @AutoMap()
+  readonly usesConfirmDelete: boolean;
 
   @ApiProperty(listProperties.owner)
   @AutoMap(() => UserReadDto)
