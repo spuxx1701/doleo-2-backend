@@ -1,5 +1,5 @@
 export default {
   signOptions: {
-    expiresIn: '60m',
+    expiresIn: '14d',
   },
 };
