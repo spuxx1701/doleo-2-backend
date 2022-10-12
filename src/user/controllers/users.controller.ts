@@ -47,7 +47,7 @@ export default class UsersController {
     return mapper.map(user, User, UserReadDto);
   }
 
-  @Post('id/inviteToList')
+  @Post(':id/inviteToList')
   @ApiOperation({
     summary: 'Invites the user to a given list.',
   })
