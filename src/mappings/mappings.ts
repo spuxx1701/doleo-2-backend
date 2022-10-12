@@ -9,7 +9,6 @@ import Ping from 'src/entities/ping.entity';
 import ListEntryCreateDto from 'src/lists/dtos/list-entry/list-entry.create.dto';
 import ListEntryReadDto from 'src/lists/dtos/list-entry/list-entry.read.dto';
 import ListEntryUpdateDto from 'src/lists/dtos/list-entry/list-entry.update.dto';
-import ListInviteCreateDto from 'src/lists/dtos/list-invite/list-invite.create.dto';
 import ListInviteReadDto from 'src/lists/dtos/list-invite/list-invite.read.dto';
 import ListCreateDto from 'src/lists/dtos/list/list.create.dto';
 import ListReadDto from 'src/lists/dtos/list/list.read.dto';
@@ -31,7 +30,6 @@ export function createMappings() {
   createMap(mapper, ListUpdateDto, List);
 
   createMap(mapper, ListInvite, ListInviteReadDto);
-  createMap(mapper, ListInviteCreateDto, ListInvite);
 
   createMap(mapper, User, UserReadDto);
   createMap(mapper, User, AccountReadDto);

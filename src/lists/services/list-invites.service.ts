@@ -10,7 +10,6 @@ import User from 'src/user/entities/user.entity';
 import UsersService from 'src/user/services/users.service';
 import { validateOrThrow } from 'src/utils/service-helper';
 import { Repository } from 'typeorm';
-import ListInviteCreateDto from '../dtos/list-invite/list-invite.create.dto';
 import ListInvite from '../entities/list-invite.entity';
 import ListsService from './lists.service';
 
@@ -30,7 +29,10 @@ export default class ListInvitesService {
     return invites;
   }
 
-  async create(dto: ListInviteCreateDto, user: User): Promise<ListInvite> {
+  async create(
+    dto: { list: string; recipient: string },
+    user: User,
+  ): Promise<ListInvite> {
     // Validate the list
     const list = await this.listsService.findOne(
       {
