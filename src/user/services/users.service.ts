@@ -7,19 +7,19 @@ import User from '../entities/user.entity';
 export default class UsersService {
   constructor(
     @InjectRepository(User)
-    private usersRepository: Repository<User>,
+    private repository: Repository<User>,
   ) {}
 
   async findMany(options?: FindManyOptions<User>): Promise<User[]> {
-    return this.usersRepository.find(options);
+    return this.repository.find(options);
   }
 
   async findOne(options: FindOneOptions<User>): Promise<User> {
-    return this.usersRepository.findOne(options);
+    return this.repository.findOne(options);
   }
 
   async save(user: User): Promise<User> {
-    return this.usersRepository.save(user);
+    return this.repository.save(user);
   }
 
   async inviteToList(
