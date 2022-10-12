@@ -17,7 +17,7 @@ import ListUpdateDto from 'src/lists/dtos/list/list.update.dto';
 import ListEntry from 'src/lists/entities/list-entry.entity';
 import ListInvite from 'src/lists/entities/list-invite.entity';
 import List from 'src/lists/entities/list.entity';
-import UserReadDto from 'src/user/dtos/user.read';
+import UserReadDto from 'src/user/dtos/user.read.dto';
 import User from 'src/user/entities/user.entity';
 import { mapper } from './mapper';
 
