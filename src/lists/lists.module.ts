@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import List from 'src/lists/entities/list.entity';
 import UsersModule from 'src/user/users.module';
@@ -16,9 +16,9 @@ import ListInvitesService from './services/list-invites.service';
     TypeOrmModule.forFeature([List]),
     TypeOrmModule.forFeature([ListEntry]),
     TypeOrmModule.forFeature([ListInvite]),
-    UsersModule,
+    forwardRef(() => UsersModule),
   ],
-  exports: [ListsService],
+  exports: [ListsService, ListInvitesService],
   controllers: [ListsController, ListEntriesController, ListInvitesController],
   providers: [ListsService, ListEntriesService, ListInvitesService],
 })

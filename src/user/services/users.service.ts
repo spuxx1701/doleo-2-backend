@@ -1,5 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import ListInvitesService from 'src/lists/services/list-invites.service';
 import { FindManyOptions, FindOneOptions, Repository } from 'typeorm';
 import User from '../entities/user.entity';
 
@@ -8,6 +9,7 @@ export default class UsersService {
   constructor(
     @InjectRepository(User)
     private repository: Repository<User>,
+    private listInvitesService: ListInvitesService,
   ) {}
 
   async findMany(options?: FindManyOptions<User>): Promise<User[]> {
@@ -34,5 +36,6 @@ export default class UsersService {
     if (!recipient) {
       throw new BadRequestException('Invalid recipient.');
     }
+    await this.listInvitesService.create(listId, recipient, user);
   }
 }

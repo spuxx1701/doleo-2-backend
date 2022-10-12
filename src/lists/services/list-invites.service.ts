@@ -1,6 +1,8 @@
 import {
   BadRequestException,
   ForbiddenException,
+  forwardRef,
+  Inject,
   Injectable,
   Logger,
   NotFoundException,
@@ -17,6 +19,7 @@ export default class ListInvitesService {
   constructor(
     @InjectRepository(ListInvite)
     private repository: Repository<ListInvite>,
+    @Inject(forwardRef(() => ListsService))
     private listsService: ListsService,
   ) {}
 
@@ -40,6 +43,8 @@ export default class ListInvitesService {
       },
       user,
     );
+    // Make sure that the inviting user owns the list
+    await this.listsService.validateListOwnership(list, user);
     // Make sure that the recipient doesn't yet have access to that list
     if (list.members.find((member) => member.id === recipient.id)) {
       throw new BadRequestException(
