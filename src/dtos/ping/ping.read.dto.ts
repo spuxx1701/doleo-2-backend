@@ -1,6 +1,6 @@
 import { AutoMap } from '@automapper/classes';
 import { ApiProperty } from '@nestjs/swagger';
-import UserReadDto from '../user/user.read';
+import UserReadDto from 'src/user/dtos/user.read';
 import { pingProperties } from './ping.properties';
 
 export default class PingReadDto {

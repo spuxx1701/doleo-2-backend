@@ -5,7 +5,7 @@ import Ping from 'src/entities/ping.entity';
 import { mapper } from 'src/mappings/mapper';
 import { validateOrThrow } from 'src/utils/service-helper';
 import { FindManyOptions, FindOneOptions, Repository } from 'typeorm';
-import UsersService from './users.service';
+import UsersService from '../user/services/users.service';
 
 @Injectable()
 export default class PingsService {

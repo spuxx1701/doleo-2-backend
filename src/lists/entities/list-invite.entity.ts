@@ -1,6 +1,6 @@
 import { AutoMap } from '@automapper/classes';
-import User from 'src/entities/user.entity';
 import List from 'src/lists/entities/list.entity';
+import User from 'src/user/entities/user.entity';
 import {
   Column,
   CreateDateColumn,

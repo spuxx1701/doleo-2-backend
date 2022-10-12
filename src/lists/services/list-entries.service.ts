@@ -5,8 +5,8 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import User from 'src/entities/user.entity';
 import { mapper } from 'src/mappings/mapper';
+import User from 'src/user/entities/user.entity';
 import { validateOrThrow } from 'src/utils/service-helper';
 import { FindOneOptions, Repository } from 'typeorm';
 import ListEntryCreateDto from '../dtos/list-entry/list-entry.create.dto';

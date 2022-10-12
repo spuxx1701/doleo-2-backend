@@ -7,7 +7,7 @@ import {
   Column,
 } from 'typeorm';
 import { AutoMap } from '@automapper/classes';
-import User from './user.entity';
+import User from '../user/entities/user.entity';
 import { IsNotEmpty } from 'class-validator';
 
 @Entity()

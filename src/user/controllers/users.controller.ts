@@ -1,18 +1,20 @@
 import {
+  Body,
   ClassSerializerInterceptor,
   Controller,
   Get,
   Param,
+  Post,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import UserReadDto from 'src/dtos/user/user.read';
-import User from 'src/entities/user.entity';
 import { LoggingInterceptor } from 'src/interceptors/logging';
 import { mapper } from 'src/mappings/mapper';
-import UsersService from 'src/services/users.service';
+import UserReadDto from '../dtos/user.read';
+import User from '../entities/user.entity';
+import UsersService from '../services/users.service';
 
 @UseInterceptors(ClassSerializerInterceptor, LoggingInterceptor)
 @ApiTags('Users')
@@ -41,5 +43,17 @@ export default class UsersController {
       relations: { family: true },
     });
     return mapper.map(user, User, UserReadDto);
+  }
+
+  @Post(':id/inviteToList')
+  @ApiOperation({
+    summary: 'Invites the user to join a given list.',
+  })
+  async inviteTolist(
+    @Param('id') id: string,
+    @Body() body: { listId: string },
+  ): Promise<void> {
+    console.log(id);
+    console.log(body);
   }
 }

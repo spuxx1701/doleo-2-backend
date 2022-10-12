@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import List from 'src/lists/entities/list.entity';
-import UsersModule from 'src/modules/users.module';
+import UsersModule from 'src/user/users.module';
 import ListEntry from './entities/list-entry.entity';
 import ListInvite from './entities/list-invite.entity';
 import ListEntriesController from './controllers/list-entries.controller';

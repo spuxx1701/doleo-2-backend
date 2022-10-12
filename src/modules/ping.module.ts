@@ -4,7 +4,7 @@ import PingsIncomingController from 'src/controllers/pings/pings.incoming.contro
 import PingsOutgoingController from 'src/controllers/pings/pings.outgoing.controller';
 import Ping from 'src/entities/ping.entity';
 import PingsService from 'src/services/pings.service';
-import UsersModule from './users.module';
+import UsersModule from 'src/user/users.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Ping]), UsersModule],

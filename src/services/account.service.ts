@@ -4,7 +4,7 @@ import AccountUpdateDto from 'src/dtos/account/account.update.dto';
 import { mapper } from 'src/mappings/mapper';
 import { validateOrThrow } from 'src/utils/service-helper';
 import { LessThan, Repository } from 'typeorm';
-import User from '../entities/user.entity';
+import User from '../user/entities/user.entity';
 import { randomBytes } from 'crypto';
 import TempPassword from 'src/entities/temp-password';
 import { Cron } from '@nestjs/schedule';

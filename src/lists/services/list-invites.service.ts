@@ -6,8 +6,8 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import User from 'src/entities/user.entity';
-import UsersService from 'src/services/users.service';
+import User from 'src/user/entities/user.entity';
+import UsersService from 'src/user/services/users.service';
 import { validateOrThrow } from 'src/utils/service-helper';
 import { Repository } from 'typeorm';
 import ListInviteCreateDto from '../dtos/list-invite/list-invite.create.dto';

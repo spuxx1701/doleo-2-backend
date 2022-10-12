@@ -18,7 +18,7 @@ import AccountUpdateDto from 'src/dtos/account/account.update.dto';
 import { LoggingInterceptor } from 'src/interceptors/logging';
 import AccountService from 'src/services/account.service';
 import { mapper } from 'src/mappings/mapper';
-import User from 'src/entities/user.entity';
+import User from 'src/user/entities/user.entity';
 
 @Controller('account')
 @ApiTags('Account')

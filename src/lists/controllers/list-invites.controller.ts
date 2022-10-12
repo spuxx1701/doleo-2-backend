@@ -17,9 +17,9 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import User from 'src/entities/user.entity';
 import { LoggingInterceptor } from 'src/interceptors/logging';
 import { mapper } from 'src/mappings/mapper';
+import User from 'src/user/entities/user.entity';
 import ListInviteCreateDto from '../dtos/list-invite/list-invite.create.dto';
 import ListInviteReadDto from '../dtos/list-invite/list-invite.read.dto';
 import ListInviteUpdateDto from '../dtos/list-invite/list-invite.update.dto';
