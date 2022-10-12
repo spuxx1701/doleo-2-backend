@@ -7,7 +7,6 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import User from 'src/user/entities/user.entity';
-import UsersService from 'src/user/services/users.service';
 import { validateOrThrow } from 'src/utils/service-helper';
 import { Repository } from 'typeorm';
 import ListInvite from '../entities/list-invite.entity';
@@ -19,7 +18,6 @@ export default class ListInvitesService {
     @InjectRepository(ListInvite)
     private repository: Repository<ListInvite>,
     private listsService: ListsService,
-    private usersService: UsersService,
   ) {}
 
   async findIncoming(user: User): Promise<ListInvite[]> {
