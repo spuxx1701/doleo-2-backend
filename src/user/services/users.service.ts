@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindManyOptions, FindOneOptions, Repository } from 'typeorm';
 import User from '../entities/user.entity';
@@ -20,5 +20,19 @@ export default class UsersService {
 
   async save(user: User): Promise<User> {
     return this.usersRepository.save(user);
+  }
+
+  async inviteToList(
+    listId: string,
+    recipientId: string,
+    user: User,
+  ): Promise<void> {
+    // Validate the recipient
+    const recipient = await this.findOne({
+      where: { id: recipientId },
+    });
+    if (!recipient) {
+      throw new BadRequestException('Invalid recipient.');
+    }
   }
 }

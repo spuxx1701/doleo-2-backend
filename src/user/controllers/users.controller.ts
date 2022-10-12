@@ -56,6 +56,6 @@ export default class UsersController {
     @Body() body: InviteToListDto,
     @Request() request,
   ): Promise<void> {
-    // Implement me
+    return this.service.inviteToList(body.list, id, request.user);
   }
 }
