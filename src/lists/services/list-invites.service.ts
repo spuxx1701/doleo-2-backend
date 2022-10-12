@@ -30,24 +30,18 @@ export default class ListInvitesService {
   }
 
   async create(
-    dto: { list: string; recipient: string },
+    listId: string,
+    recipient: User,
     user: User,
   ): Promise<ListInvite> {
     // Validate the list
     const list = await this.listsService.findOne(
       {
-        where: { id: dto.list },
+        where: { id: listId },
         relations: { members: true },
       },
       user,
     );
-    // Validate the recipient
-    const recipient = await this.usersService.findOne({
-      where: { id: dto.recipient },
-    });
-    if (!recipient) {
-      throw new BadRequestException('Invalid recipient.');
-    }
     // Make sure that the recipient doesn't yet have access to that list
     if (list.members.find((member) => member.id === recipient.id)) {
       throw new BadRequestException(
