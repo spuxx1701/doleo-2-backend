@@ -1,14 +1,11 @@
 import {
-  BadRequestException,
   Body,
   ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
   Param,
-  Post,
   Put,
-  Query,
   Request,
   UseGuards,
   UseInterceptors,
@@ -20,7 +17,6 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { LoggingInterceptor } from 'src/interceptors/logging';
 import { mapper } from 'src/mappings/mapper';
 import User from 'src/user/entities/user.entity';
-import ListInviteCreateDto from '../dtos/list-invite/list-invite.create.dto';
 import ListInviteReadDto from '../dtos/list-invite/list-invite.read.dto';
 import ListInviteUpdateDto from '../dtos/list-invite/list-invite.update.dto';
 import ListInvite from '../entities/list-invite.entity';
@@ -42,18 +38,6 @@ export default class ListInvitesController {
   async findAll(@Request() request) {
     const invites = await this.service.findIncoming(request.user as User);
     return mapper.mapArray(invites, ListInvite, ListInviteReadDto);
-  }
-
-  @Post()
-  @ApiOperation({
-    summary: 'Creates a mew list invitation.',
-  })
-  async create(
-    @Body() dto: ListInviteCreateDto,
-    @Request() request,
-  ): Promise<ListInviteReadDto> {
-    const invite = await this.service.create(dto, request.user);
-    return mapper.map(invite, ListInvite, ListInviteReadDto);
   }
 
   @Delete(':id')
