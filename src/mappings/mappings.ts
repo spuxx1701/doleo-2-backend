@@ -16,6 +16,9 @@ import ListUpdateDto from 'src/lists/dtos/list/list.update.dto';
 import ListEntry from 'src/lists/entities/list-entry.entity';
 import ListInvite from 'src/lists/entities/list-invite.entity';
 import List from 'src/lists/entities/list.entity';
+import PushSubscriptionCreateDto from 'src/push-subscriptions/dtos/push-subscription.create.dto';
+import PushSubscriptionReadDto from 'src/push-subscriptions/dtos/push-subscription.read.dto';
+import PushSubscription from 'src/push-subscriptions/entities/push-subscription';
 import UserReadDto from 'src/user/dtos/user.read.dto';
 import User from 'src/user/entities/user.entity';
 import { mapper } from './mapper';
@@ -40,4 +43,7 @@ export function createMappings() {
 
   createMap(mapper, Ping, PingReadDto);
   createMap(mapper, PingCreateDto, Ping);
+
+  createMap(mapper, PushSubscriptionCreateDto, PushSubscription);
+  createMap(mapper, PushSubscription, PushSubscriptionReadDto);
 }

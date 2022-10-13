@@ -10,6 +10,7 @@ import PingsModule from './modules/ping.module';
 import AccountModule from './modules/account.module';
 import { MailModule } from './mail/mail.module';
 import UsersModule from './user/users.module';
+import PushSubscriptionsModule from './push-subscriptions/push-subscriptions.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import UsersModule from './user/users.module';
     AuthModule,
     AccountModule,
     MailModule,
+    PushSubscriptionsModule,
   ],
 })
 export class AppModule {}
