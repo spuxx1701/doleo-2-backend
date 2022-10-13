@@ -58,4 +58,12 @@ export default class UsersController {
   ): Promise<void> {
     return this.service.inviteToList(body.list, id, request.user);
   }
+
+  @Post('id/ping')
+  @ApiOperation({
+    summary: 'Pings a user.',
+  })
+  async ping(@Param('id') id: string, @Request() request): Promise<void> {
+    return this.service.ping(id, request.user);
+  }
 }

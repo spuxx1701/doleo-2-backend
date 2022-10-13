@@ -38,4 +38,15 @@ export default class UsersService {
     }
     await this.listInvitesService.create(listId, recipient, user);
   }
+
+  async ping(recipientId: string, user: User): Promise<void> {
+    // Validate the recipient
+    const recipient = await this.findOne({
+      where: { id: recipientId },
+    });
+    if (!recipient) {
+      throw new BadRequestException('Invalid recipient.');
+    }
+    // await this.listInvitesService.create(listId, recipient, user);
+  }
 }
