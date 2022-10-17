@@ -1,7 +1,7 @@
-import { setVapidDetails } from 'web-push';
+import * as webpush from 'web-push';
 
 export function buildWebPushConfig() {
-  setVapidDetails(
+  webpush.setVapidDetails(
     process.env.APP_CLIENT_URL,
     process.env.VAPID_PUBLIC_KEY,
     process.env.VAPID_PRIVATE_KEY,

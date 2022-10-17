@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import ListInvitesService from 'src/lists/services/list-invites.service';
+import PushSubscriptionsService from 'src/push-subscriptions/services/push-notifications.service';
 import { FindManyOptions, FindOneOptions, Repository } from 'typeorm';
 import User from '../entities/user.entity';
 
@@ -10,6 +11,7 @@ export default class UsersService {
     @InjectRepository(User)
     private repository: Repository<User>,
     private listInvitesService: ListInvitesService,
+    private pushSubscriptionsService: PushSubscriptionsService,
   ) {}
 
   async findMany(options?: FindManyOptions<User>): Promise<User[]> {
@@ -37,6 +39,12 @@ export default class UsersService {
       throw new BadRequestException('Invalid recipient.');
     }
     await this.listInvitesService.create(listId, recipient, user);
+    // Send push notification
+    await this.pushSubscriptionsService.send(
+      recipient,
+      `Listeneinladung`,
+      `${user.displayName} hat Dich zu einer Liste eingeladen.`,
+    );
   }
 
   async ping(recipientId: string, user: User): Promise<void> {

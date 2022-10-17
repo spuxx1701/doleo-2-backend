@@ -13,6 +13,6 @@ import PushSubscriptionsService from './services/push-notifications.service';
   ],
   controllers: [PushSubscriptionsController],
   providers: [PushSubscriptionsService],
-  exports: [],
+  exports: [PushSubscriptionsService],
 })
 export default class PushSubscriptionsModule {}
