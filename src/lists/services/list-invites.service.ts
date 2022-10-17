@@ -90,7 +90,6 @@ export default class ListInvitesService {
     if (invite.recipient.id !== user.id) {
       throw new ForbiddenException();
     }
-    invite.notificationSent = true;
     const result = await this.repository.save(invite);
     Logger.log(
       `User '${user.displayName}' (${user.id}) has marked list invite '${invite.id}' as read.`,

@@ -24,9 +24,6 @@ export const listInviteProperties = {
     description: 'The recipient of the list invite.',
     example: 'some-user-id',
   },
-  notificationSent: {
-    description: 'Whether a notification has already been sent.',
-  },
   accept: {
     description: 'Provide to accept a list invite.',
   },

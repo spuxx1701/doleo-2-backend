@@ -47,25 +47,4 @@ export default class ListInvitesController {
   async delete(@Param('id') id: string, @Request() request): Promise<void> {
     return await this.service.delete(id, request.user);
   }
-
-  @Put(':id')
-  @ApiOperation({
-    summary: 'Updates a list invite.',
-  })
-  async update(
-    @Param('id') id: string,
-    @Body() body: ListInviteUpdateDto,
-    @Request() request,
-  ): Promise<ListInviteReadDto> {
-    if (body.notificationSent) {
-      const invite = await this.service.markAsNotificationSent(
-        id,
-        request.user,
-      );
-      return mapper.map(invite, ListInvite, ListInviteReadDto);
-    } else if (body.accept) {
-      const invite = await this.service.accept(id, request.user);
-      return mapper.map(invite, ListInvite, ListInviteReadDto);
-    }
-  }
 }

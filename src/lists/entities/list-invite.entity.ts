@@ -30,10 +30,6 @@ export default class ListInvite {
   @AutoMap(() => User)
   recipient: User;
 
-  @Column({ default: false })
-  @AutoMap()
-  notificationSent: boolean;
-
   @CreateDateColumn()
   createdAt: Date;
 
