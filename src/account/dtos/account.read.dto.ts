@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { AutoMap } from '@automapper/classes';
-import FamilyDto from '../family/family.dto';
 import { accountProperties } from './account.properties';
+import FamilyDto from 'src/dtos/family/family.dto';
 
 export default class AccountReadDto {
   @ApiProperty(accountProperties.id)

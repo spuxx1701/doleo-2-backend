@@ -13,12 +13,12 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import AccountReadDto from 'src/dtos/account/account.read.dto';
-import AccountUpdateDto from 'src/dtos/account/account.update.dto';
 import { LoggingInterceptor } from 'src/interceptors/logging';
-import AccountService from 'src/services/account.service';
 import { mapper } from 'src/mappings/mapper';
 import User from 'src/user/entities/user.entity';
+import AccountReadDto from '../dtos/account.read.dto';
+import AccountUpdateDto from '../dtos/account.update.dto';
+import AccountService from '../services/account.service';
 
 @Controller('account')
 @ApiTags('Account')

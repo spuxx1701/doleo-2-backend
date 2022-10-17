@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import AccountService from 'src/services/account.service';
+import AccountService from 'src/account/services/account.service';
 import User from 'src/user/entities/user.entity';
 import UsersService from 'src/user/services/users.service';
 import { compare } from 'src/utils/auth-helper';

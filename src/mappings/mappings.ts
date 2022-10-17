@@ -1,6 +1,6 @@
 import { createMap } from '@automapper/core';
-import AccountReadDto from 'src/dtos/account/account.read.dto';
-import AccountUpdateDto from 'src/dtos/account/account.update.dto';
+import AccountReadDto from 'src/account/dtos/account.read.dto';
+import AccountUpdateDto from 'src/account/dtos/account.update.dto';
 import FamilyDto from 'src/dtos/family/family.dto';
 import PingCreateDto from 'src/dtos/ping/ping.create.dto';
 import PingReadDto from 'src/dtos/ping/ping.read.dto';

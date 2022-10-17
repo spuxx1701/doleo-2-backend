@@ -7,7 +7,7 @@ import ListsModule from './lists/lists.module';
 import FamiliesModule from './modules/family.module';
 import CoreModule from './modules/core.module';
 import PingsModule from './modules/ping.module';
-import AccountModule from './modules/account.module';
+import AccountModule from './account/account.module';
 import { MailModule } from './mail/mail.module';
 import UsersModule from './user/users.module';
 import PushSubscriptionsModule from './push-subscriptions/push-subscriptions.module';
