@@ -1,11 +1,10 @@
 import {
-  Body,
   ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
   Param,
-  Put,
+  Post,
   Request,
   UseGuards,
   UseInterceptors,
@@ -18,7 +17,6 @@ import { LoggingInterceptor } from 'src/interceptors/logging';
 import { mapper } from 'src/mappings/mapper';
 import User from 'src/user/entities/user.entity';
 import ListInviteReadDto from '../dtos/list-invite/list-invite.read.dto';
-import ListInviteUpdateDto from '../dtos/list-invite/list-invite.update.dto';
 import ListInvite from '../entities/list-invite.entity';
 import ListInvitesService from '../services/list-invites.service';
 
@@ -38,6 +36,14 @@ export default class ListInvitesController {
   async findAll(@Request() request) {
     const invites = await this.service.findIncoming(request.user as User);
     return mapper.mapArray(invites, ListInvite, ListInviteReadDto);
+  }
+
+  @Post(':id/accept')
+  @ApiOperation({
+    summary: 'Accepts an incoming list invite.',
+  })
+  async accept(@Param('id') id: string, @Request() request): Promise<void> {
+    await this.service.accept(id, request.user);
   }
 
   @Delete(':id')

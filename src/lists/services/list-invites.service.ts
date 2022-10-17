@@ -98,7 +98,7 @@ export default class ListInvitesService {
     return result;
   }
 
-  async accept(id: string, user: User): Promise<ListInvite> {
+  async accept(id: string, user: User): Promise<void> {
     const invite = await this.repository.findOne({
       where: { id },
       relations: { list: true, recipient: true },
@@ -109,6 +109,5 @@ export default class ListInvitesService {
       throw new ForbiddenException();
     }
     await this.listsService.addUserToMembers(invite.list, user);
-    return invite;
   }
 }
