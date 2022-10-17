@@ -1,7 +1,6 @@
 import { AutoMap } from '@automapper/classes';
 import User from 'src/user/entities/user.entity';
 import {
-  Column,
   CreateDateColumn,
   Entity,
   ManyToOne,
@@ -11,8 +10,8 @@ import {
 } from 'typeorm';
 
 @Entity()
-@Unique(['list', 'sender', 'recipient'])
-export default class ListInvite {
+@Unique(['sender', 'recipient'])
+export default class Ping {
   @PrimaryGeneratedColumn('uuid')
   @AutoMap()
   id: string;

@@ -2,10 +2,7 @@ import { createMap } from '@automapper/core';
 import AccountReadDto from 'src/account/dtos/account.read.dto';
 import AccountUpdateDto from 'src/account/dtos/account.update.dto';
 import FamilyDto from 'src/dtos/family/family.dto';
-import PingCreateDto from 'src/dtos/ping/ping.create.dto';
-import PingReadDto from 'src/dtos/ping/ping.read.dto';
 import Family from 'src/entities/family.entity';
-import Ping from 'src/entities/ping.entity';
 import ListEntryCreateDto from 'src/lists/dtos/list-entry/list-entry.create.dto';
 import ListEntryReadDto from 'src/lists/dtos/list-entry/list-entry.read.dto';
 import ListEntryUpdateDto from 'src/lists/dtos/list-entry/list-entry.update.dto';
@@ -19,7 +16,9 @@ import List from 'src/lists/entities/list.entity';
 import PushSubscriptionCreateDto from 'src/push-subscriptions/dtos/push-subscription.create.dto';
 import PushSubscriptionReadDto from 'src/push-subscriptions/dtos/push-subscription.read.dto';
 import PushSubscription from 'src/push-subscriptions/entities/push-subscription';
+import PingReadDto from 'src/user/dtos/ping.read.dto';
 import UserReadDto from 'src/user/dtos/user.read.dto';
+import Ping from 'src/user/entities/ping.entity';
 import User from 'src/user/entities/user.entity';
 import { mapper } from './mapper';
 
@@ -37,12 +36,11 @@ export function createMappings() {
   createMap(mapper, User, UserReadDto);
   createMap(mapper, User, AccountReadDto);
 
+  createMap(mapper, Ping, PingReadDto);
+
   createMap(mapper, AccountUpdateDto, User);
 
   createMap(mapper, Family, FamilyDto);
-
-  createMap(mapper, Ping, PingReadDto);
-  createMap(mapper, PingCreateDto, Ping);
 
   createMap(mapper, PushSubscriptionCreateDto, PushSubscription);
   createMap(mapper, PushSubscription, PushSubscriptionReadDto);

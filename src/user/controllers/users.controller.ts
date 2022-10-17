@@ -59,7 +59,7 @@ export default class UsersController {
     return this.service.inviteToList(body.list, id, request.user);
   }
 
-  @Post('id/ping')
+  @Post(':id/ping')
   @ApiOperation({
     summary: 'Pings a user.',
   })

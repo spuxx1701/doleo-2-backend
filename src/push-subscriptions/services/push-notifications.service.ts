@@ -40,7 +40,7 @@ export default class PushSubscriptionsService {
     }
   }
 
-  async send(recipient: User, title: string, body: string): Promise<void> {
+  async send(recipient: User, title: string, body?: string): Promise<void> {
     const subscriptions = await this.repository.find({
       where: { user: recipient },
     });

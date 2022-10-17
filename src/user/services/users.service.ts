@@ -4,6 +4,7 @@ import ListInvitesService from 'src/lists/services/list-invites.service';
 import PushSubscriptionsService from 'src/push-subscriptions/services/push-notifications.service';
 import { FindManyOptions, FindOneOptions, Repository } from 'typeorm';
 import User from '../entities/user.entity';
+import PingsService from './pings.service';
 
 @Injectable()
 export default class UsersService {
@@ -11,6 +12,7 @@ export default class UsersService {
     @InjectRepository(User)
     private repository: Repository<User>,
     private listInvitesService: ListInvitesService,
+    private pingsService: PingsService,
     private pushSubscriptionsService: PushSubscriptionsService,
   ) {}
 
@@ -55,6 +57,6 @@ export default class UsersService {
     if (!recipient) {
       throw new BadRequestException('Invalid recipient.');
     }
-    // await this.listInvitesService.create(listId, recipient, user);
+    await this.pingsService.create(recipient, user);
   }
 }
