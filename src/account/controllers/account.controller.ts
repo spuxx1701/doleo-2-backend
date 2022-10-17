@@ -52,7 +52,7 @@ export class AccountController {
     return mapper.map(updatedAccount, User, AccountReadDto);
   }
 
-  @Get('/reset-password')
+  @Get('/resetPassword')
   @ApiOperation({
     summary: 'Attempts to reset your password.',
   })
