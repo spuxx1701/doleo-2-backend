@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AccountController } from 'src/controllers/account.controller';
 import TempPassword from 'src/entities/temp-password';
-import User from 'src/entities/user.entity';
 import { MailModule } from 'src/mail/mail.module';
-import AccountService from 'src/services/account.service';
-import UsersModule from './users.module';
+import User from 'src/user/entities/user.entity';
+import UsersModule from 'src/user/users.module';
+import { AccountController } from './controllers/account.controller';
+import AccountService from './services/account.service';
 
 @Module({
   imports: [

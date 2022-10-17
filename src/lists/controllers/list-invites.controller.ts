@@ -1,14 +1,10 @@
 import {
-  BadRequestException,
-  Body,
   ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
   Param,
   Post,
-  Put,
-  Query,
   Request,
   UseGuards,
   UseInterceptors,
@@ -17,12 +13,10 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import User from 'src/entities/user.entity';
 import { LoggingInterceptor } from 'src/interceptors/logging';
 import { mapper } from 'src/mappings/mapper';
-import ListInviteCreateDto from '../dtos/list-invite/list-invite.create.dto';
+import User from 'src/user/entities/user.entity';
 import ListInviteReadDto from '../dtos/list-invite/list-invite.read.dto';
-import ListInviteUpdateDto from '../dtos/list-invite/list-invite.update.dto';
 import ListInvite from '../entities/list-invite.entity';
 import ListInvitesService from '../services/list-invites.service';
 
@@ -44,16 +38,12 @@ export default class ListInvitesController {
     return mapper.mapArray(invites, ListInvite, ListInviteReadDto);
   }
 
-  @Post()
+  @Post(':id/accept')
   @ApiOperation({
-    summary: 'Creates a mew list invitation.',
+    summary: 'Accepts an incoming list invite.',
   })
-  async create(
-    @Body() dto: ListInviteCreateDto,
-    @Request() request,
-  ): Promise<ListInviteReadDto> {
-    const invite = await this.service.create(dto, request.user);
-    return mapper.map(invite, ListInvite, ListInviteReadDto);
+  async accept(@Param('id') id: string, @Request() request): Promise<void> {
+    await this.service.accept(id, request.user);
   }
 
   @Delete(':id')
@@ -62,26 +52,5 @@ export default class ListInvitesController {
   })
   async delete(@Param('id') id: string, @Request() request): Promise<void> {
     return await this.service.delete(id, request.user);
-  }
-
-  @Put(':id')
-  @ApiOperation({
-    summary: 'Updates a list invite.',
-  })
-  async update(
-    @Param('id') id: string,
-    @Body() body: ListInviteUpdateDto,
-    @Request() request,
-  ): Promise<ListInviteReadDto> {
-    if (body.notificationSent) {
-      const invite = await this.service.markAsNotificationSent(
-        id,
-        request.user,
-      );
-      return mapper.map(invite, ListInvite, ListInviteReadDto);
-    } else if (body.accept) {
-      const invite = await this.service.accept(id, request.user);
-      return mapper.map(invite, ListInvite, ListInviteReadDto);
-    }
   }
 }

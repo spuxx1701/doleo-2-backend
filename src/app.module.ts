@@ -3,13 +3,13 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ScheduleModule } from '@nestjs/schedule';
 import AuthModule from './auth/auth.module';
-import UsersModule from './modules/users.module';
 import ListsModule from './lists/lists.module';
 import FamiliesModule from './modules/family.module';
 import CoreModule from './modules/core.module';
-import PingsModule from './modules/ping.module';
-import AccountModule from './modules/account.module';
+import AccountModule from './account/account.module';
 import { MailModule } from './mail/mail.module';
+import UsersModule from './user/users.module';
+import PushSubscriptionsModule from './push-subscriptions/push-subscriptions.module';
 
 @Module({
   imports: [
@@ -32,10 +32,10 @@ import { MailModule } from './mail/mail.module';
     UsersModule,
     ListsModule,
     FamiliesModule,
-    PingsModule,
     AuthModule,
     AccountModule,
     MailModule,
+    PushSubscriptionsModule,
   ],
 })
 export class AppModule {}

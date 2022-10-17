@@ -15,7 +15,6 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import User from 'src/entities/user.entity';
 import { LoggingInterceptor } from 'src/interceptors/logging';
 import ListEntryCreateDto from 'src/lists/dtos/list-entry/list-entry.create.dto';
 import ListEntryReadDto from 'src/lists/dtos/list-entry/list-entry.read.dto';
@@ -23,6 +22,7 @@ import ListEntryUpdateDto from 'src/lists/dtos/list-entry/list-entry.update.dto'
 import ListEntry from 'src/lists/entities/list-entry.entity';
 import ListEntriesService from 'src/lists/services/list-entries.service';
 import { mapper } from 'src/mappings/mapper';
+import User from 'src/user/entities/user.entity';
 
 @Controller('listEntries')
 @ApiTags('List entries')

@@ -1,16 +1,16 @@
 import {
   BadRequestException,
   ForbiddenException,
+  forwardRef,
+  Inject,
   Injectable,
   Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import User from 'src/entities/user.entity';
-import UsersService from 'src/services/users.service';
+import User from 'src/user/entities/user.entity';
 import { validateOrThrow } from 'src/utils/service-helper';
 import { Repository } from 'typeorm';
-import ListInviteCreateDto from '../dtos/list-invite/list-invite.create.dto';
 import ListInvite from '../entities/list-invite.entity';
 import ListsService from './lists.service';
 
@@ -19,8 +19,8 @@ export default class ListInvitesService {
   constructor(
     @InjectRepository(ListInvite)
     private repository: Repository<ListInvite>,
+    @Inject(forwardRef(() => ListsService))
     private listsService: ListsService,
-    private usersService: UsersService,
   ) {}
 
   async findIncoming(user: User): Promise<ListInvite[]> {
@@ -30,22 +30,21 @@ export default class ListInvitesService {
     return invites;
   }
 
-  async create(dto: ListInviteCreateDto, user: User): Promise<ListInvite> {
+  async create(
+    listId: string,
+    recipient: User,
+    user: User,
+  ): Promise<ListInvite> {
     // Validate the list
     const list = await this.listsService.findOne(
       {
-        where: { id: dto.list },
+        where: { id: listId },
         relations: { members: true },
       },
       user,
     );
-    // Validate the recipient
-    const recipient = await this.usersService.findOne({
-      where: { id: dto.recipient },
-    });
-    if (!recipient) {
-      throw new BadRequestException('Invalid recipient.');
-    }
+    // Make sure that the inviting user owns the list
+    await this.listsService.validateListOwnership(list, user);
     // Make sure that the recipient doesn't yet have access to that list
     if (list.members.find((member) => member.id === recipient.id)) {
       throw new BadRequestException(
@@ -91,7 +90,6 @@ export default class ListInvitesService {
     if (invite.recipient.id !== user.id) {
       throw new ForbiddenException();
     }
-    invite.notificationSent = true;
     const result = await this.repository.save(invite);
     Logger.log(
       `User '${user.displayName}' (${user.id}) has marked list invite '${invite.id}' as read.`,
@@ -100,7 +98,7 @@ export default class ListInvitesService {
     return result;
   }
 
-  async accept(id: string, user: User): Promise<ListInvite> {
+  async accept(id: string, user: User): Promise<void> {
     const invite = await this.repository.findOne({
       where: { id },
       relations: { list: true, recipient: true },
@@ -111,6 +109,5 @@ export default class ListInvitesService {
       throw new ForbiddenException();
     }
     await this.listsService.addUserToMembers(invite.list, user);
-    return invite;
   }
 }
