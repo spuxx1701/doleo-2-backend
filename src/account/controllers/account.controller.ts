@@ -3,6 +3,7 @@ import {
   ClassSerializerInterceptor,
   Controller,
   Get,
+  Post,
   Put,
   Query,
   Request,
@@ -58,5 +59,15 @@ export class AccountController {
   })
   async resetPassword(@Query('email') email: string): Promise<void> {
     return this.service.createTempPassword(email);
+  }
+
+  @Post('/unsubscribePushClient')
+  @ApiOperation({
+    summary: 'Resets and unsubscribes the client from all sorts of push ',
+  })
+  async unsubscribePushClient(
+    @Body() body: { endpoint: string },
+  ): Promise<void> {
+    return this.service.unsubscribePushClient(body.endpoint);
   }
 }

@@ -33,22 +33,33 @@ export default class PushSubscriptionsService {
     return newPushSubscription;
   }
 
+  async deleteByEndpoint(endpoint: string): Promise<void> {
+    const subscription = await this.repository.findOne({ where: { endpoint } });
+    if (subscription) {
+      await this.repository.delete(subscription);
+    }
+  }
+
   async send(recipient: User, title: string, body: string): Promise<void> {
     const subscriptions = await this.repository.find({
       where: { user: recipient },
     });
     if (subscriptions.length) {
       for (const subscription of subscriptions) {
-        const notification = { title, body };
+        const notification = {
+          title,
+          body,
+          icon: `${process.env.APP_CLIENT_URL}/assets/favicon.ico`,
+        };
         try {
           await webpush.sendNotification(
             subscription,
             JSON.stringify(notification),
           );
-          debugger;
         } catch (error) {
+          await this.repository.delete(subscription.id);
           Logger.log(
-            `Found an inactive push subscription (${subscription.id}).`,
+            `Found an removed an invalid push subscription for user '${recipient.displayName}' (${recipient.id}).`,
             this.constructor.name,
           );
         }

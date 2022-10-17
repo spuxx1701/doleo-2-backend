@@ -10,6 +10,7 @@ import { hash } from 'src/utils/auth-helper';
 import { MailService } from 'src/mail/mail.service';
 import AccountUpdateDto from '../dtos/account.update.dto';
 import User from 'src/user/entities/user.entity';
+import PushSubscriptionsService from 'src/push-subscriptions/services/push-notifications.service';
 
 @Injectable()
 export default class AccountService {
@@ -19,6 +20,7 @@ export default class AccountService {
     @InjectRepository(TempPassword)
     private tempPasswordRepository: Repository<TempPassword>,
     private mailService: MailService,
+    private pushSubscriptionsService: PushSubscriptionsService,
   ) {}
 
   async read(user: User): Promise<User> {
@@ -128,5 +130,13 @@ export default class AccountService {
       await this.deleteTempPassword(password);
     }
     Logger.log(`Job finished.`, context);
+  }
+
+  /**
+   * Deletes the push subscription for a given endpoint.
+   * @param endpoint The endpoint.
+   */
+  async unsubscribePushClient(endpoint: string): Promise<void> {
+    return this.pushSubscriptionsService.deleteByEndpoint(endpoint);
   }
 }
