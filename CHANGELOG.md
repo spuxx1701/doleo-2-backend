@@ -12,5 +12,5 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/).
 - Web Push Notifications: Users can opt into Push Notifications to receive notifications for certain events
 - Users now belong to a 'Family'
 - Accounts are now secured with proper credentials
-- Lists allow more cusotmization
+- Lists allow more customization
 - Backend implemented with NestJS
