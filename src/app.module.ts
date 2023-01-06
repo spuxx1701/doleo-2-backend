@@ -10,7 +10,7 @@ import AccountModule from './account/account.module';
 import { MailModule } from './mail/mail.module';
 import UsersModule from './user/users.module';
 import PushSubscriptionsModule from './push-subscriptions/push-subscriptions.module';
-import TelemetryModule from './client-errors/telemetry.module';
+import TelemetryModule from './telemetry/telemetry.module';
 
 @Module({
   imports: [

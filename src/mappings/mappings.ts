@@ -1,9 +1,9 @@
 import { createMap } from '@automapper/core';
 import AccountReadDto from 'src/account/dtos/account.read.dto';
 import AccountUpdateDto from 'src/account/dtos/account.update.dto';
-import ClientErrorCreateDto from 'src/client-errors/client-errors/client-error.create.dto';
-import ClientError from 'src/client-errors/client-errors/client-error.entity';
-import ClientErrorReadDto from 'src/client-errors/client-errors/client-error.read.dto';
+import ClientErrorCreateDto from 'src/telemetry/client-errors/client-error.create.dto';
+import ClientError from 'src/telemetry/client-errors/client-error.entity';
+import ClientErrorReadDto from 'src/telemetry/client-errors/client-error.read.dto';
 import FamilyDto from 'src/dtos/family/family.dto';
 import Family from 'src/entities/family.entity';
 import ListEntryCreateDto from 'src/lists/dtos/list-entry/list-entry.create.dto';
