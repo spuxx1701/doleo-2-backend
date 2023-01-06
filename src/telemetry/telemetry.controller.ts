@@ -25,7 +25,7 @@ import TelemetryService from './telemetry.service';
 export default class TelemetryController {
   constructor(private service: TelemetryService) {}
 
-  @Get('/client-errors')
+  @Get('/clientErrors')
   @ApiOperation({
     summary: 'Returns client-side errors for debugging purposes.',
   })
@@ -36,7 +36,7 @@ export default class TelemetryController {
     return mapper.mapArray(clientErrors, ClientError, ClientErrorReadDto);
   }
 
-  @Post('/client-errors')
+  @Post('/clientErrors')
   @ApiOperation({ summary: 'Posts a client-side error.' })
   @UsePipes(new ValidationPipe({ transform: true }))
   async postClientError(
