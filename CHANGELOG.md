@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## [2.3.0] - 2023-01-06
+
+- The client can now send error data to the backend
+
 ## [2.0.0] - 2022-10-18
 
 ### What's new compared to the original application?
