@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   ForbiddenException,
   Injectable,
   Logger,
@@ -11,7 +10,7 @@ import { mapper } from 'src/mappings/mapper';
 import User from 'src/user/entities/user.entity';
 import UsersService from 'src/user/services/users.service';
 import { validateOrThrow } from 'src/utils/service-helper';
-import { FindOneOptions, In, Repository } from 'typeorm';
+import { FindOneOptions, Repository } from 'typeorm';
 import ListCreateDto from '../dtos/list/list.create.dto';
 import ListUpdateDto from '../dtos/list/list.update.dto';
 
