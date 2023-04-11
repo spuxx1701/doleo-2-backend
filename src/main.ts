@@ -19,7 +19,7 @@ async function bootstrap() {
     credentials: true,
   });
 
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(new ValidationPipe({ forbidUnknownValues: false }));
 
   const document = SwaggerModule.createDocument(app, buildSwaggerConfig());
   SwaggerModule.setup('/swagger', app, document, {
