@@ -104,7 +104,7 @@ export default class ListEntriesService {
       where: { id },
       relations: { list: true },
     });
-    if (!listEntry) throw new NotFoundException();
+    if (!listEntry) return;
     await this.listsService.validateListAccess(listEntry.list, user);
     await this.repository.delete(id);
     Logger.log(
