@@ -5,5 +5,8 @@ on:
     types: [opened, reopened, edited, synchronize]
 
 jobs:
+  types:
+    uses: spuxx1701/ci-cd/.github/workflows/npm_types.yml@v2.1
+
   lint:
-    uses: spuxx1701/ci/.github/workflows/npm_lint.yml@v1.2
+    uses: spuxx1701/ci-cd/.github/workflows/npm_lint.yml@v2.1
