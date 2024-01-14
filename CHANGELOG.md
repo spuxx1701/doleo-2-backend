@@ -4,7 +4,19 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## [2.4.0] - 2024-01-14
+
+### Changed
+
+- The application has been migrated to kubernetes.
+
+### Fixed
+
+- Deleting a list entry that doesn't exist no longer returns 404.
+
 ## [2.3.0] - 2023-01-06
+
+### Changed
 
 - The client can now send error data to the backend
 
