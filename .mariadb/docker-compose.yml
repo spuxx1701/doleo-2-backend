@@ -1,0 +1,25 @@
+# Spins up a local database for development purposes
+
+version: '3.3'
+
+services:
+  mariadb:
+    image: mariadb:latest
+    restart: always
+    environment:
+      MYSQL_DATABASE: doleo-dev
+      MARIADB_ROOT_PASSWORD: root
+    ports:
+      - 3306:3306
+    env_file:
+      - ../.env
+    volumes:
+      - ./data:/var/lib/mysql
+
+  adminer:
+    image: adminer:latest
+    restart: always
+    environment:
+      ADMINER_DEFAULT_SERVER: mariadb
+    ports:
+      - 8080:8080

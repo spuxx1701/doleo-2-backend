@@ -11,6 +11,7 @@ import { MailModule } from './mail/mail.module';
 import UsersModule from './user/users.module';
 import PushSubscriptionsModule from './push-subscriptions/push-subscriptions.module';
 import TelemetryModule from './telemetry/telemetry.module';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -39,5 +40,6 @@ import TelemetryModule from './telemetry/telemetry.module';
     PushSubscriptionsModule,
     TelemetryModule,
   ],
+  controllers: [AppController],
 })
 export class AppModule {}
