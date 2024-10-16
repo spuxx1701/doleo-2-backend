@@ -17,7 +17,7 @@ jobs:
     needs:
       - types
       - lint
-    uses: spuxx1701/ci-cd/.github/workflows/release_image.yml@v2.1
+    uses: spuxx1701/ci-cd/.github/workflows/docker_release_image.yml@v4.1.0
     with:
       dockerfile: Dockerfile
     secrets:
